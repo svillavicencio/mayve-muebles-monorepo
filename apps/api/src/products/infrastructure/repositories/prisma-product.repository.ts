@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@mayve/database';
+import { PrismaService } from '../../../common/prisma/prisma.service';
 import {
   ProductRepository,
   ProductFilter,
@@ -8,7 +8,7 @@ import { Product, Category } from '../../domain/entities/product.entity';
 
 @Injectable()
 export class PrismaProductRepository implements ProductRepository {
-  private prisma = new PrismaClient();
+  constructor(private readonly prisma: PrismaService) {}
 
   async findProducts(filter?: ProductFilter): Promise<Product[]> {
     const products = await this.prisma.product.findMany({
@@ -18,7 +18,7 @@ export class PrismaProductRepository implements ProductRepository {
         category: { select: { id: true, name: true, slug: true } },
       },
     });
-    return products.map((p) => this.mapToDomain(p));
+    return products.map((p: any) => this.mapToDomain(p));
   }
 
   async findProductBySlug(slug: string): Promise<Product | null> {
@@ -32,7 +32,7 @@ export class PrismaProductRepository implements ProductRepository {
 
   async findCategories(): Promise<Category[]> {
     const categories = await this.prisma.category.findMany();
-    return categories.map((c) => new Category(c.id, c.name, c.slug));
+    return categories.map((c: any) => new Category(c.id, c.name, c.slug));
   }
 
   async createCategory(name: string, slug: string): Promise<Category> {

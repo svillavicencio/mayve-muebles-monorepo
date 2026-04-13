@@ -92,11 +92,11 @@ const CategoryManager: React.FC = () => {
             <div key={cat.id} className="flex justify-between items-center p-4 border-b border-surface-variant/10 hover:bg-surface/50 transition-colors last:border-0">
               <div>
                 <span className="text-sm font-medium text-primary">{cat.name}</span>
-                <span className="text-[10px] text-secondary/50 font-mono ml-3">{cat.slug}</span>
+                <span className="text-[10px] text-secondary/50 font-mono ml-3 min-w-0 truncate">{cat.slug}</span>
               </div>
               <button 
                 onClick={() => handleDelete(cat.id, cat.name)}
-                className="text-[10px] uppercase tracking-widest text-red-400 hover:text-red-600 transition-colors"
+                className="text-[10px] uppercase tracking-widest text-red-600 hover:text-red-800 transition-colors"
               >
                 Eliminar
               </button>

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@mayve/database';
+import { PrismaService } from '../common/prisma/prisma.service';
 
 export interface SiteConfig {
   whatsapp: string;
@@ -10,7 +10,7 @@ export interface SiteConfig {
 
 @Injectable()
 export class SiteConfigService {
-  private prisma = new PrismaClient();
+  constructor(private readonly prisma: PrismaService) {}
 
   async getConfig() {
     let config = await this.prisma.siteConfig.findFirst();

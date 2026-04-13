@@ -29,7 +29,7 @@ const { product } = Astro.props as { product: Product };
 			<div>
 				<ProductGallery client:load images={product.images} />
 			</div>
-			<div class="md:sticky md:top-24">
+			<div class="md:sticky md:top-28">
 				<nav class="mb-12 label-caps opacity-40">
 					<a href="/products" class="hover:text-primary transition-colors">Colecciones</a> / {product.name}
 				</nav>

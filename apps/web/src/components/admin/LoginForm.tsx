@@ -40,7 +40,7 @@ export const LoginForm: React.FC = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 border border-surface-variant focus:border-secondary outline-none bg-surface-container-low transition-colors"
+              className="w-full px-4 py-3 border border-surface-variant focus:border-secondary bg-surface-container-low transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
               required
               placeholder="tu@email.com"
             />
@@ -54,7 +54,7 @@ export const LoginForm: React.FC = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-surface-variant focus:border-secondary outline-none bg-surface-container-low transition-colors"
+              className="w-full px-4 py-3 border border-surface-variant focus:border-secondary bg-surface-container-low transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
               required
               placeholder="••••••••"
             />

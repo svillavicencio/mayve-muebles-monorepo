@@ -40,163 +40,77 @@ export const ConfigForm: React.FC = () => {
     }
   };
 
-  if (loading) return <div className="loading">Cargando configuración...</div>;
-  if (!config) return <div className="error">{error || 'No se pudo cargar la configuración'}</div>;
+  if (loading) return <div className="p-10 text-center label-caps animate-pulse">Cargando configuración...</div>;
+  if (!config) return <div className="text-red-600 text-sm">{error || 'No se pudo cargar la configuración'}</div>;
 
   return (
-    <form onSubmit={handleSubmit} className="admin-form">
-      {error && <div className="form-error">{error}</div>}
-      {success && <div className="form-success">{success}</div>}
+    <form onSubmit={handleSubmit} className="space-y-8">
+      {error && <div className="text-red-600 text-sm">{error}</div>}
+      {success && <div className="text-green-600 text-sm">{success}</div>}
 
-      <div className="form-grid">
-        <div className="form-group">
-          <label htmlFor="whatsapp">WhatsApp de Contacto</label>
-          <input
-            id="whatsapp"
-            type="text"
-            value={config.whatsapp}
-            onChange={(e) => setConfig({ ...config, whatsapp: e.target.value })}
-            placeholder="Ej: +5491112345678"
-            required
-          />
-        </div>
+      <div>
+        <h3 className="text-[10px] uppercase tracking-widest text-secondary border-b border-surface-variant/30 pb-2 mb-6">Contacto</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+          <div className="space-y-1">
+            <label htmlFor="whatsapp" className="text-[10px] uppercase tracking-widest text-secondary/70">WhatsApp de Contacto</label>
+            <input
+              id="whatsapp"
+              type="text"
+              value={config.whatsapp}
+              onChange={(e) => setConfig({ ...config, whatsapp: e.target.value })}
+              placeholder="Ej: +5491112345678"
+              required
+              className="w-full border-b border-surface-variant focus:border-primary outline-none py-2 text-sm transition-colors bg-transparent"
+            />
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="email">Email de Contacto</label>
-          <input
-            id="email"
-            type="email"
-            value={config.email}
-            onChange={(e) => setConfig({ ...config, email: e.target.value })}
-            placeholder="Ej: contacto@mayve.com"
-            required
-          />
-        </div>
+          <div className="space-y-1">
+            <label htmlFor="email" className="text-[10px] uppercase tracking-widest text-secondary/70">Email de Contacto</label>
+            <input
+              id="email"
+              type="email"
+              value={config.email}
+              onChange={(e) => setConfig({ ...config, email: e.target.value })}
+              placeholder="Ej: contacto@mayve.com"
+              required
+              className="w-full border-b border-surface-variant focus:border-primary outline-none py-2 text-sm transition-colors bg-transparent"
+            />
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="cashDiscount">Descuento por Efectivo (%)</label>
-          <input
-            id="cashDiscount"
-            type="number"
-            min="0"
-            max="100"
-            value={config.cashDiscount}
-            onChange={(e) => setConfig({ ...config, cashDiscount: parseInt(e.target.value) || 0 })}
-            required
-          />
-        </div>
+          <div className="space-y-1">
+            <label htmlFor="cashDiscount" className="text-[10px] uppercase tracking-widest text-secondary/70">Descuento por Efectivo (%)</label>
+            <input
+              id="cashDiscount"
+              type="number"
+              min="0"
+              max="100"
+              value={config.cashDiscount}
+              onChange={(e) => setConfig({ ...config, cashDiscount: parseInt(e.target.value) || 0 })}
+              required
+              className="w-full border-b border-surface-variant focus:border-primary outline-none py-2 text-sm transition-colors bg-transparent"
+            />
+          </div>
 
-        <div className="form-group full-width">
-          <label htmlFor="announcementBanner">Banner de Anuncios (Opcional)</label>
-          <textarea
-            id="announcementBanner"
-            value={config.announcementBanner || ''}
-            onChange={(e) => setConfig({ ...config, announcementBanner: e.target.value })}
-            placeholder="Ej: ¡10% de descuento en toda la web este fin de semana!"
-            rows={3}
-          />
-          <p className="field-hint">Dejá vacío para ocultar el banner.</p>
+          <div className="space-y-1 md:col-span-2">
+            <label htmlFor="announcementBanner" className="text-[10px] uppercase tracking-widest text-secondary/70">Banner de Anuncios (Opcional)</label>
+            <textarea
+              id="announcementBanner"
+              value={config.announcementBanner || ''}
+              onChange={(e) => setConfig({ ...config, announcementBanner: e.target.value })}
+              placeholder="Ej: ¡10% de descuento en toda la web este fin de semana!"
+              rows={3}
+              className="w-full border-b border-surface-variant focus:border-primary outline-none py-2 text-sm transition-colors bg-transparent"
+            />
+            <p className="text-[10px] uppercase tracking-widest text-secondary/70 mt-1">Dejá vacío para ocultar el banner.</p>
+          </div>
         </div>
       </div>
 
-      <div className="form-actions">
-        <button type="submit" className="btn-save" disabled={saving}>
+      <div className="flex justify-end">
+        <button type="submit" className="btn-primary px-8 py-3" disabled={saving}>
           {saving ? 'Guardando...' : 'Guardar Cambios'}
         </button>
       </div>
-
-      <style>{`
-        .admin-form {
-          display: flex;
-          flex-direction: column;
-          gap: 2rem;
-        }
-
-        .form-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1.5rem;
-        }
-
-        .form-group.full-width {
-          grid-column: span 2;
-        }
-
-        .form-group label {
-          display: block;
-          font-size: 0.8rem;
-          text-transform: uppercase;
-          letter-spacing: 0.1em;
-          margin-bottom: 0.5rem;
-          color: var(--color-on-surface);
-          opacity: 0.8;
-          font-weight: 600;
-        }
-
-        .form-group input, .form-group textarea {
-          width: 100%;
-          padding: 0.75rem;
-          border: 1px solid var(--color-surface-container-highest);
-          border-radius: 4px;
-          font-family: var(--font-sans);
-          font-size: 1rem;
-          background: var(--color-surface-container-lowest);
-        }
-
-        .field-hint {
-          font-size: 0.8rem;
-          color: var(--color-on-surface);
-          opacity: 0.6;
-          margin-top: 0.25rem;
-        }
-
-        .form-error {
-          padding: 1rem;
-          background: #fee2e2;
-          color: #dc2626;
-          border-radius: 4px;
-          font-size: 0.9rem;
-        }
-
-        .form-success {
-          padding: 1rem;
-          background: #dcfce7;
-          color: #16a34a;
-          border-radius: 4px;
-          font-size: 0.9rem;
-        }
-
-        .btn-save {
-          background: var(--color-primary);
-          color: white;
-          padding: 1rem 2rem;
-          border: none;
-          border-radius: 4px;
-          text-transform: uppercase;
-          letter-spacing: 0.2em;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.2s ease;
-        }
-
-        .btn-save:hover:not(:disabled) {
-          background: var(--color-secondary);
-        }
-
-        .btn-save:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
-
-        @media (max-width: 768px) {
-          .form-grid {
-            grid-template-columns: 1fr;
-          }
-          .form-group.full-width {
-            grid-column: span 1;
-          }
-        }
-      `}</style>
     </form>
   );
 };

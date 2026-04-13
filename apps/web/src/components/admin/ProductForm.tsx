@@ -156,7 +156,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ id }) => {
             <label className="text-[10px] uppercase tracking-widest text-secondary/70">Descripción</label>
             <textarea 
               name="description" value={formData.description} onChange={handleChange} required rows={4}
-              className="w-full border border-surface-variant focus:border-primary outline-none p-3 text-sm transition-colors mt-2"
+              className="w-full border-b border-surface-variant focus:border-primary outline-none py-2 text-sm transition-colors bg-transparent mt-2"
             />
           </div>
         </div>
@@ -194,7 +194,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ id }) => {
             <label className="flex items-center space-x-3 cursor-pointer group">
               <input 
                 type="checkbox" name="inStock" checked={formData.inStock} onChange={handleChange}
-                className="w-4 h-4 border-surface-variant text-primary focus:ring-0"
+                className="w-4 h-4 border-surface-variant text-primary focus:ring-0 accent-secondary"
               />
               <span className="text-[10px] uppercase tracking-widest text-secondary group-hover:text-primary transition-colors">En Stock</span>
             </label>
@@ -202,7 +202,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ id }) => {
             <label className="flex items-center space-x-3 cursor-pointer group">
               <input 
                 type="checkbox" name="isFeatured" checked={formData.isFeatured} onChange={handleChange}
-                className="w-4 h-4 border-surface-variant text-primary focus:ring-0"
+                className="w-4 h-4 border-surface-variant text-primary focus:ring-0 accent-secondary"
               />
               <span className="text-[10px] uppercase tracking-widest text-secondary group-hover:text-primary transition-colors">Destacado</span>
             </label>

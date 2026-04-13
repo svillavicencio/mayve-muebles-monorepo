@@ -39,12 +39,13 @@ const ProductTable: React.FC = () => {
   if (error) return <div className="p-10 text-center text-red-500 label-caps">{error}</div>;
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto relative">
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-white to-transparent md:hidden" />
       <div className="pb-6 border-b border-surface-variant/30 flex justify-between items-center">
         <span className="label-caps text-secondary">{products.length} Productos en total</span>
         <a 
           href="/admin/products/new" 
-          className="bg-primary text-white px-4 py-2 text-[10px] uppercase tracking-widest hover:bg-secondary transition-colors"
+          className="btn-primary px-4 py-2"
         >
           Nuevo Producto
         </a>
@@ -68,7 +69,7 @@ const ProductTable: React.FC = () => {
                   {product.images?.[0] ? (
                     <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-[8px] text-secondary opacity-50 uppercase tracking-tighter">Sin imagen</div>
+                    <div className="w-full h-full flex items-center justify-center text-[10px] text-secondary opacity-50 uppercase tracking-tighter">Sin imagen</div>
                   )}
                 </div>
               </td>
