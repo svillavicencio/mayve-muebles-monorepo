@@ -25,40 +25,39 @@ export const LoginForm: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-surface font-sans">
-      <div className="w-full max-w-md p-8 bg-white shadow-ambient border border-surface-variant/50">
-        <h1 className="mb-8 text-2xl font-display text-primary uppercase tracking-label text-center">
-          Panel Admin
-        </h1>
-        
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-1">
-            <label className="label-caps text-secondary block">
-              Email
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 border border-surface-variant focus:border-secondary bg-surface-container-low transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
-              required
-              placeholder="tu@email.com"
-            />
-          </div>
+    <div className="w-full max-w-md p-8 bg-white shadow-ambient border border-surface-variant/50 rounded-lg">
+      <h1 className="mb-8 text-2xl font-display text-primary uppercase tracking-label text-center">
+        Panel Admin
+      </h1>
+      
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="space-y-1">
+          <label className="label-caps text-secondary block text-xs">
+            Email
+          </label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-4 py-3 border border-surface-variant focus:border-secondary bg-surface-container-low transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary text-sm"
+            required
+            placeholder="tu@email.com"
+          />
+        </div>
 
-          <div className="space-y-1">
-            <label className="label-caps text-secondary block">
-              Password
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-surface-variant focus:border-secondary bg-surface-container-low transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
-              required
-              placeholder="••••••••"
-            />
-          </div>
+        <div className="space-y-1">
+          <label className="label-caps text-secondary block text-xs">
+            Contraseña
+          </label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-4 py-3 border border-surface-variant focus:border-secondary bg-surface-container-low transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary text-sm"
+            required
+            placeholder="••••••••"
+          />
+        </div>
 
           {error && (
             <div className="text-red-500 text-xs uppercase tracking-wider text-center">
@@ -79,6 +78,5 @@ export const LoginForm: React.FC = () => {
           Mayve Muebles &copy; {new Date().getFullYear()}
         </p>
       </div>
-    </div>
   );
 };

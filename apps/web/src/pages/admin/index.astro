@@ -38,87 +38,26 @@ const stats = [
 <AdminLayout title="Panel de Administración">
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
     {stats.map(stat => (
-      <div class="stat-card">
-        <span class="stat-icon">
+      <div class="bg-white p-8 rounded-xl shadow-ambient flex items-center gap-6 hover:-translate-y-1 transition-transform">
+        <span class="text-secondary">
           <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={stat.icon}></path>
           </svg>
         </span>
-        <div class="stat-content">
-          <h3>{stat.label}</h3>
-          <p class="stat-value">{stat.value}</p>
+        <div>
+          <h3 class="text-xs uppercase tracking-widest text-on-surface/60 mb-1">{stat.label}</h3>
+          <p class="text-4xl font-bold text-primary font-sans">{stat.value}</p>
         </div>
       </div>
     ))}
   </div>
 
-  <div class="quick-actions">
-    <h2>Acciones Rápidas</h2>
-    <div class="action-buttons">
-      <a href="/admin/products/new" class="btn-primary">Nuevo Producto</a>
-      <a href="/admin/categories" class="btn-primary">Gestionar Categorías</a>
-      <a href="/admin/config" class="btn-primary">Ajustes Globales</a>
+  <div>
+    <h2 class="text-2xl font-display mb-6">Acciones Rápidas</h2>
+    <div class="flex gap-4 flex-wrap">
+      <a href="/admin/products/new" class="btn-primary px-8 py-4 font-semibold">Nuevo Producto</a>
+      <a href="/admin/categories" class="btn-primary px-8 py-4 font-semibold">Gestionar Categorías</a>
+      <a href="/admin/config" class="btn-primary px-8 py-4 font-semibold">Ajustes Globales</a>
     </div>
   </div>
 </AdminLayout>
-
-<style>
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 4rem;
-  }
-
-  .stat-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: var(--shadow-ambient);
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    transition: transform 0.2s ease;
-  }
-
-  .stat-card:hover {
-    transform: translateY(-4px);
-  }
-
-  .stat-icon {
-    color: var(--color-secondary);
-  }
-
-  .stat-content h3 {
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-on-surface);
-    opacity: 0.6;
-    margin-bottom: 0.25rem;
-  }
-
-  .stat-value {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--color-primary);
-    font-family: var(--font-sans);
-  }
-
-  .quick-actions h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .action-buttons {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .btn-primary {
-    padding: 1rem 2rem;
-    text-decoration: none;
-    font-weight: 600;
-  }
-</style>

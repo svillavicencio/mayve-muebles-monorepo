@@ -6,17 +6,7 @@ import { LoginForm } from '../../components/admin/LoginForm';
 ---
 
 <Layout title="Iniciar Sesión">
-  <main>
+  <main class="min-h-screen flex items-center justify-center bg-surface">
     <LoginForm client:load />
   </main>
 </Layout>
-
-<style>
-  main {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--color-surface);
-  }
-</style>

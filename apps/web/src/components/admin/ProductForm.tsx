@@ -159,6 +159,22 @@ const ProductForm: React.FC<ProductFormProps> = ({ id }) => {
               className="w-full border-b border-surface-variant focus:border-primary outline-none py-2 text-sm transition-colors bg-transparent mt-2"
             />
           </div>
+
+          <div className="space-y-1">
+            <label htmlFor="materials" className="text-[10px] uppercase tracking-widest text-secondary/70">Materiales</label>
+            <textarea 
+              id="materials" name="materials" value={formData.materials} onChange={handleChange} rows={3}
+              className="w-full border-b border-surface-variant focus:border-primary outline-none py-2 text-sm transition-colors bg-transparent mt-2"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label htmlFor="dimensions" className="text-[10px] uppercase tracking-widest text-secondary/70">Dimensiones</label>
+            <input 
+              id="dimensions" type="text" name="dimensions" value={formData.dimensions} onChange={handleChange}
+              className="w-full border-b border-surface-variant focus:border-primary outline-none py-2 text-sm transition-colors"
+            />
+          </div>
         </div>
 
         {/* Pricing & Stock */}

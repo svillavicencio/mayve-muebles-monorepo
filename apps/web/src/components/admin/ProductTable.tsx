@@ -86,7 +86,7 @@ const ProductTable: React.FC = () => {
                 ${product.price?.toLocaleString()}
               </td>
               <td className="p-4">
-                <span className={`text-[9px] uppercase tracking-widest ${product.inStock ? 'text-primary' : 'text-secondary/60'}`}>
+                <span className={`text-xs uppercase tracking-widest ${product.inStock ? 'text-primary' : 'text-secondary/60'}`}>
                   {product.inStock ? 'En Stock' : 'Agotado'}
                 </span>
               </td>
