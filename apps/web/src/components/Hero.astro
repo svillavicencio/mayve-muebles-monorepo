@@ -1,0 +1,33 @@
+---
+import { Image } from 'astro:assets';
+import landingImg from '../assets/landing.png';
+---
+
+<section class="relative min-h-[90vh] flex flex-col justify-center items-start overflow-hidden">
+  <div class="absolute inset-0 z-0">
+    <Image 
+      src={landingImg} 
+      alt="Mayve Muebles Showroom" 
+      class="w-full h-full object-cover opacity-90 scale-105"
+      loading="eager"
+    />
+    <div class="absolute inset-0 bg-gradient-to-r from-surface/80 via-surface/40 to-transparent"></div>
+  </div>
+  
+  <div class="container relative z-10 max-w-content-wide">
+    <h1 class="text-4xl md:text-7xl lg:text-[9rem] font-serif leading-[0.85] mb-12 text-primary tracking-tighter">
+      Tu hogar,<br/>tu estilo.
+    </h1>
+    <p class="text-xl md:text-2xl text-secondary leading-relaxed max-w-content-narrow mb-12 opacity-90">
+      Muebles de pino artesanales con terminaciones premium. Cada pieza pintada a mano, personalizada en color, entregada en Zona Sur, Zona Oeste y CABA.
+    </p>
+    <div class="flex flex-wrap gap-4 md:gap-6">
+      <a href="/products" class="btn-primary px-8 py-4 md:px-10 md:py-5 lg:px-12 lg:py-6">
+        Ver Catálogo
+      </a>
+      <a href="https://wa.me/5491141812877" target="_blank" rel="noopener noreferrer" class="btn-primary px-8 py-4 md:px-10 md:py-5 lg:px-12 lg:py-6 !bg-transparent border border-primary hover:!bg-primary hover:text-on-primary transition-colors">
+        Consultanos
+      </a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,101 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { ProductGallery } from '../../components/ProductGallery';
+import { fetchProducts } from '../../lib/api-client';
+import type { Product } from '@mayve/shared';
+
+export async function getStaticPaths() {
+  try {
+    const products = await fetchProducts<Product[]>();
+    return products.map((product) => ({
+      params: { slug: product.slug },
+      props: { product },
+    }));
+  } catch (e) {
+    console.error("Error fetching paths for SSG:", e);
+    return [];
+  }
+}
+
+const { product } = Astro.props as { product: Product };
+---
+
+<Layout title={product.name} description={product.description}>
+	<Header />
+	<main class="container py-12 md:py-16 lg:py-24">
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 lg:gap-24 items-start">
+			<div>
+				<ProductGallery client:load images={product.images} />
+			</div>
+			<div class="md:sticky md:top-24">
+				<nav class="mb-12 label-caps opacity-40">
+					<a href="/products" class="hover:text-primary transition-colors">Colecciones</a> / {product.name}
+				</nav>
+				
+				<h1 class="text-4xl md:text-6xl lg:text-7xl font-serif text-primary mb-6 tracking-tighter italic">{product.name}</h1>
+				
+				<div class="mb-16">
+					<p class="text-2xl md:text-4xl text-secondary mb-2 tracking-tight">${Number(product.cashDiscountPrice || product.price).toLocaleString('es-AR')}</p>
+					<p class="text-sm opacity-50 italic">Precio promocional en efectivo. Precio de lista: ${Number(product.listPrice || product.price * 1.2).toLocaleString('es-AR')}</p>
+				</div>
+				
+				<div class="mb-16">
+					<h2 class="label-caps mb-4 text-primary opacity-80">Descripción</h2>
+					<p class="text-lg font-sans text-on-surface leading-relaxed opacity-70 mb-8">{product.description}</p>
+					
+					{product.isCustomizable && (
+						<div class="inline-flex items-center gap-2 px-3 py-1 bg-surface-container-high rounded-full mb-8">
+							<span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+							<span class="text-xs label-caps opacity-80">Personalizable</span>
+						</div>
+					)}
+
+					<div class="grid grid-cols-2 gap-x-8 gap-y-4 text-sm">
+						<div>
+							<span class="label-caps block opacity-40 mb-1">Estructura</span>
+							<span class="font-medium">{product.structure || 'N/A'}</span>
+						</div>
+						<div>
+							<span class="label-caps block opacity-40 mb-1">Acabado</span>
+							<span class="font-medium">{product.finish || 'N/A'}</span>
+						</div>
+						<div>
+							<span class="label-caps block opacity-40 mb-1">Género</span>
+							<span class="font-medium">{product.fabric || 'N/A'}</span>
+						</div>
+						<div>
+							<span class="label-caps block opacity-40 mb-1">Plazo de entrega</span>
+							<span class="font-medium">{product.leadTime} días</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="bg-surface-container-low p-8 mb-16 flex flex-col gap-6 rounded-sm">
+					<div class="flex justify-between items-center">
+						<span class="label-caps opacity-50">Dimensiones</span>
+						<span class="text-sm font-medium">{product.dimensions || 'No especificado'}</span>
+					</div>
+					<div class="flex justify-between items-center">
+						<span class="label-caps opacity-50">Stock</span>
+						<span class="text-sm font-medium">{product.inStock ? 'Disponible' : 'Bajo pedido'}</span>
+					</div>
+					<div class="flex justify-between items-center">
+						<span class="label-caps opacity-50">Armado</span>
+						<span class="text-sm font-medium">{product.requiresAssembly ? 'Requiere armado' : 'Listo para usar'}</span>
+					</div>
+					<div class="flex justify-between items-center border-t border-outline-variant pt-6 mt-2">
+						<span class="label-caps opacity-50 text-xs">Peso estimado</span>
+						<span class="text-sm font-medium">{product.shippingWeight ? `${product.shippingWeight} kg` : '-'}</span>
+					</div>
+				</div>
+
+				<button class="btn-primary w-full py-6">
+					Solicitar cotización
+				</button>
+			</div>
+		</div>
+	</main>
+	<Footer />
+</Layout>

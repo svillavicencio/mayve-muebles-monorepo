@@ -1,0 +1,23 @@
+{
+  "name": "@mayve/database",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "scripts": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.0.0",
+    "bcryptjs": "^3.0.3"
+  },
+  "devDependencies": {
+    "@mayve/typescript-config": "*",
+    "@types/bcryptjs": "^2.4.6",
+    "prisma": "^5.0.0",
+    "tsx": "^4.0.0"
+  }
+}

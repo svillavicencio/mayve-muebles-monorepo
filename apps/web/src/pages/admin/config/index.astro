@@ -1,0 +1,10 @@
+---
+export const prerender = false;
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { ConfigForm } from '../../../components/admin/ConfigForm';
+
+---
+
+<AdminLayout title="Configuración del Sitio">
+  <ConfigForm client:load />
+</AdminLayout>

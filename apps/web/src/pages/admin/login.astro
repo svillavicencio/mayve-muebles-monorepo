@@ -1,0 +1,22 @@
+---
+export const prerender = false;
+import Layout from '../../layouts/Layout.astro';
+import { LoginForm } from '../../components/admin/LoginForm';
+
+---
+
+<Layout title="Admin Login | Mayve Muebles">
+  <main>
+    <LoginForm client:load />
+  </main>
+</Layout>
+
+<style>
+  main {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-surface);
+  }
+</style>

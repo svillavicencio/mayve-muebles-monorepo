@@ -1,0 +1,88 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Contacto" description="Consultá a Vero por WhatsApp. Asesoramiento personalizado, sin intermediarios. Entregamos en Zona Sur, Zona Oeste y CABA.">
+  <Header />
+  <main>
+
+    <!-- Hero -->
+    <section class="section-block pt-24 md:pt-32 lg:pt-40">
+      <div class="container max-w-content-wide">
+        <span class="inline-block label-caps tracking-label-widest text-primary/60 mb-8">
+          Contacto
+        </span>
+        <h1 class="text-4xl md:text-7xl lg:text-[8rem] font-serif leading-[0.85] mb-12 text-primary tracking-tighter">
+          Hablemos<br/>de tu espacio.
+        </h1>
+        <p class="text-xl md:text-2xl text-secondary leading-relaxed max-w-content-narrow opacity-80">
+          El asesoramiento es gratis. Contale a Vero cómo es tu ambiente y en qué colores lo imaginás.
+        </p>
+      </div>
+    </section>
+
+    <!-- Contact cards -->
+    <section class="section-block bg-primary text-on-primary">
+      <div class="container">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-16 lg:gap-24">
+
+          <div class="space-y-8">
+            <h3 class="text-2xl md:text-3xl font-serif tracking-tight">WhatsApp</h3>
+            <p class="text-base md:text-xl opacity-80 leading-relaxed">
+              La forma más rápida de hablar con Vero. Consultás, elegís colores y coordinamos la entrega.
+            </p>
+            <a
+              href="https://wa.me/5491141812877"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-block label-caps border-b border-on-primary pb-2 hover:opacity-100 transition-opacity opacity-60"
+            >
+              +54 9 11 4181-2877
+            </a>
+          </div>
+
+          <div class="space-y-8">
+            <h3 class="text-2xl md:text-3xl font-serif tracking-tight">Ubicación</h3>
+            <p class="text-base md:text-xl opacity-80 leading-relaxed">
+              José León Suárez 4062,<br/>
+              Lanús Oeste, Buenos Aires.
+            </p>
+            <a
+              href="https://maps.google.com/?q=José+León+Suárez+4062+Lanús+Oeste"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-block label-caps border-b border-on-primary pb-2 hover:opacity-100 transition-opacity opacity-60"
+            >
+              Cómo llegar
+            </a>
+          </div>
+
+          <div class="space-y-8">
+            <h3 class="text-2xl md:text-3xl font-serif tracking-tight">Entregas</h3>
+            <ul class="text-base md:text-xl opacity-80 space-y-4">
+              <li>Zona Sur</li>
+              <li>Zona Oeste</li>
+              <li>CABA</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Social proof -->
+    <section class="section-block">
+      <div class="container text-center space-y-6">
+        <p class="text-5xl md:text-7xl font-serif text-primary tracking-tighter">4.9 / 5</p>
+        <p class="label-caps tracking-label-widest text-primary/60">más de 200 hogares</p>
+        <p class="text-xl text-secondary opacity-70 max-w-content-narrow mx-auto leading-relaxed">
+          Calidad, asesoramiento en color y entregas coordinadas. La experiencia que describís vos cuando recomendás Mayve.
+        </p>
+      </div>
+    </section>
+
+  </main>
+  <Footer />
+</Layout>

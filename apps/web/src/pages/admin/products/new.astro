@@ -1,0 +1,9 @@
+---
+export const prerender = false;
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import ProductForm from '../../../components/admin/ProductForm';
+---
+
+<AdminLayout title="Nuevo Producto">
+  <ProductForm client:load />
+</AdminLayout>

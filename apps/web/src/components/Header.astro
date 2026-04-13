@@ -1,0 +1,14 @@
+---
+import { MobileNav } from './MobileNav'
+---
+<header class="sticky top-0 z-50 py-4 md:py-6 lg:py-8 glass-panel shadow-ambient">
+  <div class="container flex justify-between items-center">
+    <a href="/" class="text-4xl font-serif text-primary tracking-tighter">Mayve</a>
+    <nav class="hidden md:flex gap-12">
+      <a href="/products" class="text-xs font-sans uppercase tracking-[0.3em] hover:text-secondary transition-colors">Colecciones</a>
+      <a href="/about" class="text-xs font-sans uppercase tracking-[0.3em] hover:text-secondary transition-colors">Nuestra Artesana</a>
+      <a href="/contact" class="text-xs font-sans uppercase tracking-[0.3em] hover:text-secondary transition-colors">Contacto</a>
+    </nav>
+    <div class="md:hidden"><MobileNav client:load /></div>
+  </div>
+</header>

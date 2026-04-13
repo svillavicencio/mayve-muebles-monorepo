@@ -1,0 +1,125 @@
+---
+export const prerender = false;
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { fetchProducts, fetchCategories } from '../../lib/api-client';
+
+// Fetching basic stats server-side
+let totalProducts = 0;
+let totalCategories = 0;
+
+try {
+  const products = await fetchProducts<any[]>();
+  const categories = await fetchCategories<any[]>();
+  totalProducts = products.length;
+  totalCategories = categories.length;
+} catch (e) {
+  console.error('Error fetching admin stats:', e);
+}
+
+const stats = [
+  {
+    label: 'Productos Totales',
+    value: totalProducts,
+    icon: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4'
+  },
+  {
+    label: 'Categorías',
+    value: totalCategories,
+    icon: 'M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z'
+  },
+  {
+    label: 'Configuración',
+    value: 'OK',
+    icon: 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z'
+  },
+];
+---
+
+<AdminLayout title="Panel de Administración">
+  <div class="stats-grid">
+    {stats.map(stat => (
+      <div class="stat-card">
+        <span class="stat-icon">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={stat.icon}></path>
+          </svg>
+        </span>
+        <div class="stat-content">
+          <h3>{stat.label}</h3>
+          <p class="stat-value">{stat.value}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <div class="quick-actions">
+    <h2>Acciones Rápidas</h2>
+    <div class="action-buttons">
+      <a href="/admin/products/new" class="btn-primary">Nuevo Producto</a>
+      <a href="/admin/categories" class="btn-primary">Gestionar Categorías</a>
+      <a href="/admin/config" class="btn-primary">Ajustes Globales</a>
+    </div>
+  </div>
+</AdminLayout>
+
+<style>
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+
+  .stat-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-ambient);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    transition: transform 0.2s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .stat-icon {
+    color: var(--color-secondary);
+  }
+
+  .stat-content h3 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-on-surface);
+    opacity: 0.6;
+    margin-bottom: 0.25rem;
+  }
+
+  .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    font-family: var(--font-sans);
+  }
+
+  .quick-actions h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    padding: 1rem 2rem;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+</style>
