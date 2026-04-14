@@ -33,3 +33,16 @@ export const ProductSchema = z.object({
 });
 
 export type Product = z.infer<typeof ProductSchema>;
+
+export const SiteConfigSchema = z.object({
+  id: z.string().uuid(),
+  whatsapp: z.string(),
+  email: z.string(),
+  cashDiscount: z.number().int().default(10),
+  announcementBanner: z.string().nullable().optional(),
+  instagramUrl: z.string().default(''),
+  address: z.string().default(''),
+  googleMapsUrl: z.string().default(''),
+});
+
+export type SiteConfig = z.infer<typeof SiteConfigSchema>;

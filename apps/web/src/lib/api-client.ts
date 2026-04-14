@@ -1,5 +1,16 @@
 const API_BASE_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000';
 
+export interface SiteConfig {
+  id: string;
+  whatsapp: string;
+  email: string;
+  cashDiscount: number;
+  announcementBanner?: string | null;
+  instagramUrl: string;
+  address: string;
+  googleMapsUrl: string;
+}
+
 export async function fetchProducts<T>(params?: Record<string, string>): Promise<T> {
   const url = new URL(`${API_BASE_URL}/products`);
   if (params) {

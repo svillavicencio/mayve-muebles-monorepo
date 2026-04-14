@@ -70,5 +70,8 @@ model SiteConfig {
   email              String
   cashDiscount       Int      @default(10)
   announcementBanner String?
+  instagramUrl       String   @default("")
+  address            String   @default("")
+  googleMapsUrl      String   @default("")
   updatedAt          DateTime @updatedAt
 }

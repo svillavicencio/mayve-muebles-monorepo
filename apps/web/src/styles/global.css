@@ -80,6 +80,25 @@
   font-family: var(--font-sans);
 }
 
+@utility footer-contact-link {
+  display: inline-block;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-family: var(--font-sans);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: currentColor;
+  padding-bottom: 0.5rem;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
 @utility section-block {
   padding-block: 4rem;
 

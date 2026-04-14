@@ -106,6 +106,47 @@ export const ConfigForm: React.FC = () => {
         </div>
       </div>
 
+      <div>
+        <h3 className="text-xs uppercase tracking-widest text-secondary border-b border-surface-variant/30 pb-2 mb-6">Redes Sociales y Ubicación</h3>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-8">
+          <div className="space-y-1 lg:col-span-2">
+            <label htmlFor="instagramUrl" className="text-xs uppercase tracking-widest text-secondary/70">URL de Instagram</label>
+            <input
+              id="instagramUrl"
+              type="url"
+              value={config.instagramUrl || ''}
+              onChange={(e) => setConfig({ ...config, instagramUrl: e.target.value })}
+              placeholder="Ej: https://instagram.com/mayvemuebles"
+              className="w-full border-b border-surface-variant focus:border-primary outline-none py-3 text-sm transition-colors bg-transparent"
+            />
+          </div>
+
+          <div className="space-y-1 lg:col-span-2">
+            <label htmlFor="address" className="text-xs uppercase tracking-widest text-secondary/70">Dirección del Showroom</label>
+            <input
+              id="address"
+              type="text"
+              value={config.address || ''}
+              onChange={(e) => setConfig({ ...config, address: e.target.value })}
+              placeholder="Ej: José León Suárez 4062, Lanús Oeste, Buenos Aires."
+              className="w-full border-b border-surface-variant focus:border-primary outline-none py-3 text-sm transition-colors bg-transparent"
+            />
+          </div>
+
+          <div className="space-y-1 lg:col-span-2">
+            <label htmlFor="googleMapsUrl" className="text-xs uppercase tracking-widest text-secondary/70">URL de Google Maps ("Cómo llegar")</label>
+            <input
+              id="googleMapsUrl"
+              type="url"
+              value={config.googleMapsUrl || ''}
+              onChange={(e) => setConfig({ ...config, googleMapsUrl: e.target.value })}
+              placeholder="Ej: https://maps.google.com/?q=José+León+Suárez+4062+Lanús+Oeste"
+              className="w-full border-b border-surface-variant focus:border-primary outline-none py-3 text-sm transition-colors bg-transparent"
+            />
+          </div>
+        </div>
+      </div>
+
       <div className="flex justify-end pt-4">
         <button type="submit" className="btn-primary px-8 py-4 md:py-3 w-full md:w-auto" disabled={saving}>
           {saving ? 'Guardando...' : 'Guardar Cambios'}

@@ -6,6 +6,9 @@ export interface SiteConfig {
   email: string;
   cashDiscount: number;
   announcementBanner?: string | null;
+  instagramUrl: string;
+  address: string;
+  googleMapsUrl: string;
 }
 
 @Injectable()
@@ -21,17 +24,21 @@ export class SiteConfigService {
           whatsapp: '',
           email: '',
           cashDiscount: 10,
+          instagramUrl: '',
+          address: '',
+          googleMapsUrl: '',
         },
       });
     }
     return config;
   }
 
-  async updateConfig(data: Partial<SiteConfig>) {
-    const config = await this.getConfig();
+  async updateConfig(data: Record<string, unknown>) {
+    const { id: bodyId, updatedAt: _updatedAt, ...safeData } = data;
+    const targetId = typeof bodyId === 'string' ? bodyId : (await this.getConfig()).id;
     return this.prisma.siteConfig.update({
-      where: { id: config.id },
-      data,
+      where: { id: targetId },
+      data: safeData,
     });
   }
 }

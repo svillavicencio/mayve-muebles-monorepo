@@ -1,4 +1,17 @@
 ---
+import { fetchSiteConfig } from '../lib/api-client';
+import type { SiteConfig } from '../lib/api-client';
+
+let config: SiteConfig | null = null;
+try {
+  config = await fetchSiteConfig<SiteConfig>();
+} catch {
+  // fallback: links will be hidden if config is unavailable
+}
+
+const instagramUrl = config?.instagramUrl || '';
+const whatsapp = config?.whatsapp || '';
+const whatsappUrl = whatsapp ? `https://wa.me/${whatsapp}` : '';
 ---
 <footer class="bg-surface-container-highest py-12 md:py-16 lg:py-24 mt-16 md:mt-24 lg:mt-16 text-on-surface">
   <div class="container flex flex-col md:flex-row justify-between items-start md:items-center gap-12">
@@ -7,8 +20,12 @@
       <p class="text-xs uppercase tracking-[0.2em] opacity-60">© {new Date().getFullYear()} Mayve Muebles y Deco. Todos los derechos reservados.</p>
     </div>
     <div class="flex gap-12">
-      <a href="https://instagram.com/mayvemuebles" target="_blank" rel="noopener noreferrer" class="label-caps hover:text-secondary transition-all">Instagram</a>
-      <a href="https://wa.me/5491141812877" target="_blank" rel="noopener noreferrer" class="label-caps hover:text-secondary transition-all">WhatsApp</a>
+      {instagramUrl && (
+        <a href={instagramUrl} target="_blank" rel="noopener noreferrer" class="label-caps hover:text-secondary transition-all">Instagram</a>
+      )}
+      {whatsappUrl && (
+        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" class="label-caps hover:text-secondary transition-all">WhatsApp</a>
+      )}
     </div>
   </div>
 </footer>
