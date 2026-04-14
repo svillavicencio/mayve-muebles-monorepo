@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaClient } from '@mayve/database';
 import { PrismaProductRepository } from './prisma-product.repository';
+import { PrismaModule } from '../../../common/prisma/prisma.module';
 
 describe('PrismaProductRepository', () => {
   let repository: PrismaProductRepository;
@@ -22,6 +23,7 @@ describe('PrismaProductRepository', () => {
   beforeEach(async () => {
     jest.setTimeout(30000);
     const module: TestingModule = await Test.createTestingModule({
+      imports: [PrismaModule],
       providers: [PrismaProductRepository],
     }).compile();
 

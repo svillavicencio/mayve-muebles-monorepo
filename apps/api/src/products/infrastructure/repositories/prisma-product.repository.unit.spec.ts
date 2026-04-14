@@ -20,6 +20,20 @@ jest.mock('@mayve/database', () => ({
 
 import { PrismaProductRepository } from './prisma-product.repository';
 
+function makeRepository(overrides: Record<string, any> = {}): PrismaProductRepository {
+  const mockPrismaService = {
+    product: {
+      findMany: mockFindMany,
+      findUnique: mockFindUnique,
+      count: jest.fn(),
+      create: jest.fn(),
+    },
+    category: { findMany: jest.fn() },
+    ...overrides,
+  };
+  return new PrismaProductRepository(mockPrismaService as any);
+}
+
 const baseProductRow = {
   id: 'prod-1',
   name: 'Silla Rústica',
@@ -48,7 +62,7 @@ describe('PrismaProductRepository - category include', () => {
 
   beforeEach(() => {
     mockFindMany.mockReset();
-    repository = new PrismaProductRepository();
+    repository = makeRepository();
   });
 
   it('maps category to a Category entity when product has category data', async () => {

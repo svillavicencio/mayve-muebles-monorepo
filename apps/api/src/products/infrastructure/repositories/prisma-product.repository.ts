@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@mayve/database';
 import { PrismaService } from '../../../common/prisma/prisma.service';
 import {
   ProductRepository,
   ProductFilter,
 } from '../../domain/repositories/product.repository';
 import { Product, Category } from '../../domain/entities/product.entity';
+import { CategoryNotEmptyException } from '../../domain/exceptions/category-not-empty.exception';
 
 @Injectable()
 export class PrismaProductRepository implements ProductRepository {
@@ -55,10 +57,18 @@ export class PrismaProductRepository implements ProductRepository {
   }
 
   async deleteCategory(id: string): Promise<boolean> {
-    await this.prisma.category.delete({
-      where: { id },
-    });
-    return true;
+    try {
+      await this.prisma.category.delete({ where: { id } });
+      return true;
+    } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2003'
+      ) {
+        throw new CategoryNotEmptyException();
+      }
+      throw error;
+    }
   }
 
   async isSlugAvailable(slug: string): Promise<boolean> {

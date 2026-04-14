@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { AdminToaster } from '../components/admin/AdminToaster';
 
 interface Props {
 	title: string;
@@ -119,6 +120,8 @@ const navItems = [
     </div>
 
     <div id="sidebar-backdrop" class="fixed inset-0 bg-black/30 z-40 hidden lg:hidden"></div>
+
+    <AdminToaster client:load />
 
     <script>
       // Logout

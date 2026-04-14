@@ -55,11 +55,6 @@ export class ProductsController {
     return this.getProductsUseCase.getAllProducts(filter);
   }
 
-  @Get('categories')
-  async getCategories() {
-    return this.getProductsUseCase.getAllCategories();
-  }
-
   @Get(':slug')
   async getProduct(@Param('slug') slug: string) {
     const product = await this.getProductsUseCase.getProductBySlug(slug);

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { fetchCategories, createCategory, deleteCategory } from '../../lib/api-client';
 import { slugify } from '../../lib/slugify';
 import type { Category } from '@mayve/shared';
@@ -40,6 +41,7 @@ const CategoryManager: React.FC = () => {
       });
       setNewName('');
       await loadCategories();
+      toast.success('Categoría creada correctamente');
     } catch (err: any) {
       setError(err.message || 'Error al crear categoría');
     } finally {
@@ -52,8 +54,13 @@ const CategoryManager: React.FC = () => {
       try {
         await deleteCategory(id);
         setCategories(categories.filter(c => c.id !== id));
-      } catch (err) {
-        alert('Error al eliminar la categoría');
+        toast.success('Categoría eliminada correctamente');
+      } catch (err: any) {
+        if (err?.status === 409) {
+          toast.error('No se puede eliminar: la categoría no está vacía');
+        } else {
+          toast.error('Error al eliminar la categoría');
+        }
       }
     }
   };

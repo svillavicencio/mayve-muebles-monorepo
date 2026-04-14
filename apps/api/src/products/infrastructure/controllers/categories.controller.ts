@@ -1,5 +1,6 @@
 import {
   Controller,
+  Get,
   Post,
   Body,
   Patch,
@@ -11,6 +12,7 @@ import {
 import { CreateCategoryUseCase } from '../../application/use-cases/create-category.use-case';
 import { UpdateCategoryUseCase } from '../../application/use-cases/update-category.use-case';
 import { DeleteCategoryUseCase } from '../../application/use-cases/delete-category.use-case';
+import { GetProductsUseCase } from '../../application/use-cases/get-products.use-case';
 import { JwtAuthGuard } from '../../../auth/guards/jwt-auth.guard';
 
 @Controller('categories')
@@ -19,7 +21,13 @@ export class CategoriesController {
     private readonly createCategoryUseCase: CreateCategoryUseCase,
     private readonly updateCategoryUseCase: UpdateCategoryUseCase,
     private readonly deleteCategoryUseCase: DeleteCategoryUseCase,
+    private readonly getProductsUseCase: GetProductsUseCase,
   ) {}
+
+  @Get()
+  async getCategories() {
+    return this.getProductsUseCase.getAllCategories();
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post()

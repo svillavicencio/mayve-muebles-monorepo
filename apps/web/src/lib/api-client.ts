@@ -21,7 +21,7 @@ export async function fetchProduct<T>(slug: string): Promise<T> {
 }
 
 export async function fetchCategories<T = unknown>(): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}/products/categories`, { credentials: 'include' });
+  const response = await fetch(`${API_BASE_URL}/categories`, { credentials: 'include' });
   if (!response.ok) {
     throw new Error(`Error fetching categories: ${response.statusText}`);
   }
@@ -71,7 +71,7 @@ export async function deleteProduct(id: string): Promise<void> {
 }
 
 export async function createCategory<T>(data: any): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}/products/categories`, {
+  const response = await fetch(`${API_BASE_URL}/categories`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -87,12 +87,15 @@ export async function createCategory<T>(data: any): Promise<T> {
 }
 
 export async function deleteCategory(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/products/categories/${id}`, {
+  const response = await fetch(`${API_BASE_URL}/categories/${id}`, {
     method: 'DELETE',
     credentials: 'include',
   });
   if (!response.ok) {
-    throw new Error(`Error deleting category: ${response.statusText}`);
+    const body = await response.json().catch(() => ({ message: response.statusText }));
+    const err = new Error(body.message || `Error deleting category: ${response.statusText}`);
+    (err as any).status = response.status;
+    throw err;
   }
 }
 
