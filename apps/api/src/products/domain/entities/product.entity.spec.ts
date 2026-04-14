@@ -1,31 +1,63 @@
-import { Product, Category } from './product.entity';
+import { Product } from './product.entity';
 
-const baseArgs = [
-  'id-1',
-  'Silla Rústica',
-  'silla-rustica',
-  'Descripción de silla',
-  1200,
-  'cat-1',
-  15,
-  true,
-  1400,
-  1100,
-  true,
-  false,
-] as const;
+describe('Product Entity', () => {
+  const validProductData = {
+    id: '1',
+    name: 'Table',
+    slug: 'table',
+    description: 'A wooden table',
+    price: 100,
+    categoryId: 'cat1',
+    leadTime: 7,
+    isCustomizable: true,
+    listPrice: 120,
+    cashDiscountPrice: 90,
+    inStock: true,
+    requiresAssembly: true,
+    images: ['image1.jpg'],
+  };
 
-describe('Product entity', () => {
-  describe('category field', () => {
-    it('is undefined when no category is passed', () => {
-      const product = new Product(...baseArgs);
-      expect(product.category).toBeUndefined();
-    });
+  it('should initialize correctly with at least one image', () => {
+    const product = new Product(
+      validProductData.id,
+      validProductData.name,
+      validProductData.slug,
+      validProductData.description,
+      validProductData.price,
+      validProductData.categoryId,
+      validProductData.leadTime,
+      validProductData.isCustomizable,
+      validProductData.listPrice,
+      validProductData.cashDiscountPrice,
+      validProductData.inStock,
+      validProductData.requiresAssembly,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      validProductData.images,
+    );
+    expect(product.images).toHaveLength(1);
+    expect(product.images[0]).toBe('image1.jpg');
+  });
 
-    it('exposes the category when passed as last argument', () => {
-      const category = new Category('cat-1', 'Salas', 'salas');
-      const product = new Product(
-        ...baseArgs,
+  it('should throw an error when initialized with zero images', () => {
+    expect(() => {
+      new Product(
+        validProductData.id,
+        validProductData.name,
+        validProductData.slug,
+        validProductData.description,
+        validProductData.price,
+        validProductData.categoryId,
+        validProductData.leadTime,
+        validProductData.isCustomizable,
+        validProductData.listPrice,
+        validProductData.cashDiscountPrice,
+        validProductData.inStock,
+        validProductData.requiresAssembly,
         undefined,
         undefined,
         undefined,
@@ -33,12 +65,7 @@ describe('Product entity', () => {
         undefined,
         undefined,
         [],
-        false,
-        category,
       );
-      expect(product.category).toBe(category);
-      expect(product.category?.id).toBe('cat-1');
-      expect(product.category?.name).toBe('Salas');
-    });
+    }).toThrow('El producto debe tener al menos una imagen');
   });
 });

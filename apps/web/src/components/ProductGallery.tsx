@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
+import { getImageUrl } from '../lib/image-url';
 
 interface Props {
   images: string[];
 }
 
 export const ProductGallery: React.FC<Props> = ({ images }) => {
-  const [mainImage, setMainImage] = useState(images[0] || '/placeholder.jpg');
+  const initialImage = getImageUrl(images[0]);
+  const [mainImage, setMainImage] = useState(initialImage);
 
   return (
     <div className="flex flex-col gap-8">
@@ -13,17 +15,20 @@ export const ProductGallery: React.FC<Props> = ({ images }) => {
         <img src={mainImage} alt="Producto" className="w-full h-full object-cover transition-all duration-700" />
       </div>
       <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
-        {images.map((img, idx) => (
-          <button 
-            key={idx} 
-            onClick={() => setMainImage(img)}
-            className={`w-[44px] h-[44px] md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-sm overflow-hidden cursor-pointer p-0 bg-surface-container flex-shrink-0 transition-all duration-300 ${
-              mainImage === img ? 'opacity-100 scale-105' : 'opacity-40 hover:opacity-70'
-            }`}
-          >
-            <img src={img} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />
-          </button>
-        ))}
+        {images.map((img, idx) => {
+          const url = getImageUrl(img);
+          return (
+            <button 
+              key={idx} 
+              onClick={() => setMainImage(url)}
+              className={`w-[44px] h-[44px] md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-sm overflow-hidden cursor-pointer p-0 bg-surface-container flex-shrink-0 transition-all duration-300 ${
+                mainImage === url ? 'opacity-100 scale-105' : 'opacity-40 hover:opacity-70'
+              }`}
+            >
+              <img src={url} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />
+            </button>
+          );
+        })}
       </div>
     </div>
   );

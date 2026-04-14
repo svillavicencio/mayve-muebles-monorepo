@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Product } from '@mayve/shared';
+import { getImageUrl } from '../lib/image-url';
 
 interface Props {
   product: Product;
@@ -15,7 +16,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
       )}
       <div className="aspect-square bg-surface-container-low overflow-hidden">
         <img
-          src={product.images[0] || '/placeholder.jpg'}
+          src={getImageUrl(product.images[0])}
           alt={product.name}
           className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
           loading="lazy"

@@ -1,71 +1,53 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const request = require('supertest') as (typeof import('supertest'))['default'];
+import request from 'supertest';
 import { ProductsController } from './products.controller';
 import { GetProductsUseCase } from '../../application/use-cases/get-products.use-case';
 import { CreateProductUseCase } from '../../application/use-cases/create-product.use-case';
 import { UpdateProductUseCase } from '../../application/use-cases/update-product.use-case';
 import { DeleteProductUseCase } from '../../application/use-cases/delete-product.use-case';
-import { CreateProductDto } from './dtos/create-product.dto';
+import { STORAGE_SERVICE } from '../../../common/storage/storage.service';
 
 describe('ProductsController', () => {
   let controller: ProductsController;
-  let createUseCase: CreateProductUseCase;
-
-  const mockProduct = {
-    id: '1',
-    name: 'Mesa de Roble',
-    slug: 'mesa-de-roble',
-    description: 'Una hermosa mesa de roble.',
-    price: 1500,
-    categoryId: 'cat1',
-    images: [],
-  };
-
-  const mockCreateProductUseCase = {
-    execute: jest.fn().mockResolvedValue(mockProduct),
-  };
-
-  const mockUpdateProductUseCase = {
-    execute: jest.fn().mockResolvedValue(mockProduct),
-  };
-
-  const mockDeleteProductUseCase = {
-    execute: jest.fn().mockResolvedValue(true),
-  };
-
-  const mockGetProductsUseCase = {
-    getAllProducts: jest.fn(),
-    getProductBySlug: jest.fn(),
-    getAllCategories: jest.fn(),
-  };
+  let getProductsUseCase: any;
+  let createProductUseCase: any;
+  let updateProductUseCase: any;
+  let deleteProductUseCase: any;
+  let storageService: any;
 
   beforeEach(async () => {
+    getProductsUseCase = {
+      getAllProducts: jest.fn(),
+      getProductBySlug: jest.fn(),
+      getAllCategories: jest.fn(),
+    };
+    createProductUseCase = {
+      execute: jest.fn(),
+    };
+    updateProductUseCase = {
+      execute: jest.fn(),
+    };
+    deleteProductUseCase = {
+      execute: jest.fn(),
+    };
+    storageService = {
+      saveFile: jest.fn().mockResolvedValue('/uploads/test.jpg'),
+      deleteFile: jest.fn(),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ProductsController],
       providers: [
-        {
-          provide: GetProductsUseCase,
-          useValue: mockGetProductsUseCase,
-        },
-        {
-          provide: CreateProductUseCase,
-          useValue: mockCreateProductUseCase,
-        },
-        {
-          provide: UpdateProductUseCase,
-          useValue: mockUpdateProductUseCase,
-        },
-        {
-          provide: DeleteProductUseCase,
-          useValue: mockDeleteProductUseCase,
-        },
+        { provide: GetProductsUseCase, useValue: getProductsUseCase },
+        { provide: CreateProductUseCase, useValue: createProductUseCase },
+        { provide: UpdateProductUseCase, useValue: updateProductUseCase },
+        { provide: DeleteProductUseCase, useValue: deleteProductUseCase },
+        { provide: STORAGE_SERVICE, useValue: storageService },
       ],
     }).compile();
 
     controller = module.get<ProductsController>(ProductsController);
-    createUseCase = module.get<CreateProductUseCase>(CreateProductUseCase);
   });
 
   it('should be defined', () => {
@@ -74,29 +56,45 @@ describe('ProductsController', () => {
 
   describe('getProducts', () => {
     it('should call getAllProducts without filter when no query param', async () => {
-      mockGetProductsUseCase.getAllProducts.mockResolvedValue([]);
-      await controller.getProducts(undefined);
-      expect(mockGetProductsUseCase.getAllProducts).toHaveBeenCalledWith(
-        undefined,
-      );
+      await controller.getProducts();
+      expect(getProductsUseCase.getAllProducts).toHaveBeenCalledWith(undefined);
     });
 
     it('should call getAllProducts with featured filter when featured=true', async () => {
-      mockGetProductsUseCase.getAllProducts.mockResolvedValue([]);
       await controller.getProducts('true');
-      expect(mockGetProductsUseCase.getAllProducts).toHaveBeenCalledWith({
+      expect(getProductsUseCase.getAllProducts).toHaveBeenCalledWith({
         featured: true,
       });
     });
   });
 
-  describe('getCategories', () => {
-    it('should call getAllCategories and return the result', async () => {
-      const mockCategories = [{ id: 'cat-1', name: 'Salas', slug: 'salas' }];
-      mockGetProductsUseCase.getAllCategories.mockResolvedValue(mockCategories);
-      const result = await controller.getCategories();
-      expect(result).toEqual(mockCategories);
-      expect(mockGetProductsUseCase.getAllCategories).toHaveBeenCalled();
+  describe('createProduct', () => {
+    it('should upload files and call CreateProductUseCase.execute', async () => {
+      const dto = {
+        name: 'P1',
+        price: '100',
+        listPrice: '120',
+        cashDiscountPrice: '90',
+        leadTime: '7',
+        isFeatured: 'true',
+        inStock: 'true',
+        isCustomizable: 'false',
+        requiresAssembly: 'true',
+      };
+      const mockFile = { buffer: Buffer.from('test') } as Express.Multer.File;
+      const files = [mockFile];
+
+      await controller.createProduct(dto as any, files);
+
+      expect(storageService.saveFile).toHaveBeenCalledWith(mockFile);
+      expect(createProductUseCase.execute).toHaveBeenCalledWith(
+        expect.objectContaining({
+          name: 'P1',
+          price: 100,
+          images: ['/uploads/test.jpg'],
+          isFeatured: true,
+        }),
+      );
     });
   });
 
@@ -104,21 +102,19 @@ describe('ProductsController', () => {
     let app: INestApplication;
 
     beforeEach(async () => {
-      const module = await Test.createTestingModule({
+      const moduleFixture: TestingModule = await Test.createTestingModule({
         controllers: [ProductsController],
         providers: [
-          { provide: GetProductsUseCase, useValue: mockGetProductsUseCase },
-          { provide: CreateProductUseCase, useValue: mockCreateProductUseCase },
-          { provide: UpdateProductUseCase, useValue: mockUpdateProductUseCase },
-          { provide: DeleteProductUseCase, useValue: mockDeleteProductUseCase },
+          { provide: GetProductsUseCase, useValue: getProductsUseCase },
+          { provide: CreateProductUseCase, useValue: createProductUseCase },
+          { provide: UpdateProductUseCase, useValue: updateProductUseCase },
+          { provide: DeleteProductUseCase, useValue: deleteProductUseCase },
+          { provide: STORAGE_SERVICE, useValue: storageService },
         ],
       }).compile();
-      app = module.createNestApplication();
+
+      app = moduleFixture.createNestApplication();
       await app.init();
-      mockGetProductsUseCase.getAllCategories.mockResolvedValue([
-        { id: 'cat-1', name: 'Salas', slug: 'salas' },
-      ]);
-      mockGetProductsUseCase.getProductBySlug.mockResolvedValue(mockProduct);
     });
 
     afterEach(async () => {
@@ -126,54 +122,26 @@ describe('ProductsController', () => {
     });
 
     it('GET /products/categories resolves to the categories handler (returns array, not a product)', async () => {
-      return request(app.getHttpServer())
-        .get('/products/categories')
-        .expect(200)
-        .expect((res) => {
-          expect(Array.isArray(res.body)).toBe(true);
-          expect(res.body[0].id).toBe('cat-1');
-        });
+      getProductsUseCase.getAllCategories.mockResolvedValue([
+        { id: '1', name: 'Cat' },
+      ]);
+
+      const response = await request(app.getHttpServer()).get(
+        '/products/categories',
+      );
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
     });
 
     it('GET /products/:slug still resolves to the product handler after categories fix', async () => {
-      return request(app.getHttpServer())
-        .get('/products/mesa-de-roble')
-        .expect(200)
-        .expect((res) => {
-          expect(res.body.name).toBe('Mesa de Roble');
-        });
-    });
-  });
-
-  describe('createProduct', () => {
-    it('should call CreateProductUseCase.execute and return the created product', async () => {
-      const dto: CreateProductDto = {
-        name: 'Mesa de Roble',
-        description: 'Una hermosa mesa de roble.',
-        price: 1500,
-        categoryId: 'cat1',
-        leadTime: 15,
-        isCustomizable: true,
-        listPrice: 1800,
-        cashDiscountPrice: 1400,
-        inStock: true,
-        requiresAssembly: false,
-        isFeatured: false,
-        materials: 'Roble macizo',
-        dimensions: '200x100x75cm',
-        structure: 'Madera',
-        finish: 'Barniz natural',
-        fabric: '',
-        shippingWeight: 50,
-      };
-
-      const result = await controller.createProduct(dto);
-
-      expect(result).toEqual(mockProduct);
-      expect(createUseCase.execute).toHaveBeenCalledWith({
-        ...dto,
-        isFeatured: false,
+      getProductsUseCase.getProductBySlug.mockResolvedValue({
+        id: '1',
+        name: 'Product',
       });
+
+      const response = await request(app.getHttpServer()).get('/products/mesa');
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({ id: '1', name: 'Product' });
     });
   });
 });

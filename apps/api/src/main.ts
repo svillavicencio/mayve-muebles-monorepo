@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import { DomainExceptionFilter } from './common/filters/domain-exception.filter';
 
 async function bootstrap() {
+  console.log('API CWD:', process.cwd());
   const app = await NestFactory.create(AppModule);
   app.use(cookieParser());
   app.useGlobalFilters(new DomainExceptionFilter());

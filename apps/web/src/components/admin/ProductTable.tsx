@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { fetchProducts, deleteProduct } from '../../lib/api-client';
+import { getImageUrl } from '../../lib/image-url';
 import type { Product } from '@mayve/shared';
 
 const ProductTable: React.FC = () => {
@@ -70,7 +71,7 @@ const ProductTable: React.FC = () => {
                 <td className="p-4">
                   <div className="w-12 h-12 bg-surface-variant overflow-hidden">
                     {product.images?.[0] ? (
-                      <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />
+                      <img src={getImageUrl(product.images[0])} alt={product.name} className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-xs text-secondary opacity-50 uppercase tracking-tighter text-center">Sin imagen</div>
                     )}
@@ -127,7 +128,7 @@ const ProductTable: React.FC = () => {
           <div key={product.id} className="bg-white border border-surface-variant/20 p-4 rounded-lg flex flex-col min-[340px]:flex-row gap-4 min-[340px]:gap-6 shadow-sm">
             <div className="w-20 h-20 bg-surface-variant shrink-0 rounded-sm overflow-hidden mx-auto min-[340px]:mx-0">
               {product.images?.[0] ? (
-                <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />
+                <img src={getImageUrl(product.images[0])} alt={product.name} className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-xs text-secondary opacity-50 uppercase text-center p-2">Sin imagen</div>
               )}

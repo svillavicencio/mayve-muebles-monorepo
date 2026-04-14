@@ -100,7 +100,6 @@ export class PrismaProductRepository implements ProductRepository {
         continue;
       }
 
-      // Match baseSlug followed by a hyphen and digits
       const match = product.slug.match(new RegExp(`^${baseSlug}-(\\d+)$`));
       if (match) {
         const suffix = parseInt(match[1], 10);
@@ -132,6 +131,12 @@ export class PrismaProductRepository implements ProductRepository {
         fabric: data.fabric,
         shippingWeight: data.shippingWeight,
         isFeatured: data.isFeatured,
+        images: {
+          create: data.images.map((url, index) => ({
+            url,
+            isMain: index === 0,
+          })),
+        },
       },
       include: { images: true },
     });
@@ -142,34 +147,49 @@ export class PrismaProductRepository implements ProductRepository {
     id: string,
     data: Partial<Omit<Product, 'id'>>,
   ): Promise<Product | null> {
+    const updateData: any = {
+      name: data.name,
+      slug: data.slug,
+      description: data.description,
+      price: data.price,
+      categoryId: data.categoryId,
+      leadTime: data.leadTime,
+      isCustomizable: data.isCustomizable,
+      listPrice: data.listPrice,
+      cashDiscountPrice: data.cashDiscountPrice,
+      inStock: data.inStock,
+      requiresAssembly: data.requiresAssembly,
+      materials: data.materials,
+      dimensions: data.dimensions,
+      structure: data.structure,
+      finish: data.finish,
+      fabric: data.fabric,
+      shippingWeight: data.shippingWeight,
+      isFeatured: data.isFeatured,
+    };
+
+    if (data.images) {
+      updateData.images = {
+        deleteMany: {},
+        create: data.images.map((url, index) => ({
+          url,
+          isMain: index === 0,
+        })),
+      };
+    }
+
     const product = await this.prisma.product.update({
       where: { id },
-      data: {
-        name: data.name,
-        slug: data.slug,
-        description: data.description,
-        price: data.price,
-        categoryId: data.categoryId,
-        leadTime: data.leadTime,
-        isCustomizable: data.isCustomizable,
-        listPrice: data.listPrice,
-        cashDiscountPrice: data.cashDiscountPrice,
-        inStock: data.inStock,
-        requiresAssembly: data.requiresAssembly,
-        materials: data.materials,
-        dimensions: data.dimensions,
-        structure: data.structure,
-        finish: data.finish,
-        fabric: data.fabric,
-        shippingWeight: data.shippingWeight,
-        isFeatured: data.isFeatured,
-      },
+      data: updateData,
       include: { images: true },
     });
     return this.mapToDomain(product);
   }
 
   async delete(id: string): Promise<boolean> {
+    await this.prisma.image.deleteMany({
+      where: { productId: id },
+    });
     await this.prisma.product.delete({
       where: { id },
     });
@@ -177,7 +197,6 @@ export class PrismaProductRepository implements ProductRepository {
   }
 
   private mapToDomain(p: any): Product {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     const rawCat = p.category as
       | { id: string; name: string; slug: string }
       | null

@@ -34,7 +34,7 @@ describe('CreateProductUseCase', () => {
     useCase = module.get<CreateProductUseCase>(CreateProductUseCase);
   });
 
-  it('should generate a slug and create a product', async () => {
+  it('should generate a slug and create a product with images', async () => {
     const productData = {
       name: 'Modern Chair',
       description: 'A very modern chair',
@@ -46,6 +46,7 @@ describe('CreateProductUseCase', () => {
       cashDiscountPrice: 140,
       inStock: true,
       requiresAssembly: false,
+      images: ['image1.jpg'],
     };
     const mockSlug = 'modern-chair';
     const mockProduct = new Product(
@@ -61,6 +62,13 @@ describe('CreateProductUseCase', () => {
       productData.cashDiscountPrice,
       productData.inStock,
       productData.requiresAssembly,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      productData.images,
     );
 
     slugService.generateUniqueSlug.mockResolvedValue(mockSlug);
@@ -75,7 +83,6 @@ describe('CreateProductUseCase', () => {
     expect(repository.create).toHaveBeenCalledWith({
       ...productData,
       slug: mockSlug,
-      images: [],
     });
   });
 });

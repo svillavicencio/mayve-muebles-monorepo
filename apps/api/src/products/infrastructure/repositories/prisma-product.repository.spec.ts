@@ -13,7 +13,6 @@ describe('PrismaProductRepository', () => {
   });
 
   afterAll(async () => {
-    // Clean up after all tests to leave a clean DB
     await prisma.image.deleteMany();
     await prisma.product.deleteMany();
     await prisma.category.deleteMany();
@@ -29,11 +28,27 @@ describe('PrismaProductRepository', () => {
 
     repository = module.get<PrismaProductRepository>(PrismaProductRepository);
 
-    // Clean up before each test
     await prisma.image.deleteMany();
     await prisma.product.deleteMany();
     await prisma.category.deleteMany();
   });
+
+  const createCategory = async () => {
+    return await prisma.category.create({
+      data: { name: 'Cat', slug: 'cat' },
+    });
+  };
+
+  const createProductWithImage = async (data: any) => {
+    return await prisma.product.create({
+      data: {
+        ...data,
+        images: {
+          create: [{ url: 'image1.jpg', isMain: true }],
+        },
+      },
+    });
+  };
 
   describe('isSlugAvailable', () => {
     it('should return true if slug does not exist', async () => {
@@ -42,20 +57,15 @@ describe('PrismaProductRepository', () => {
     });
 
     it('should return false if slug exists', async () => {
-      const category = await prisma.category.create({
-        data: { name: 'Cat', slug: 'cat' },
-      });
-
-      await prisma.product.create({
-        data: {
-          name: 'Product',
-          slug: 'product',
-          description: 'Desc',
-          price: 100,
-          listPrice: 100,
-          cashDiscountPrice: 100,
-          categoryId: category.id,
-        },
+      const category = await createCategory();
+      await createProductWithImage({
+        name: 'Product',
+        slug: 'product',
+        description: 'Desc',
+        price: 100,
+        listPrice: 100,
+        cashDiscountPrice: 100,
+        categoryId: category.id,
       });
 
       const result = await repository.isSlugAvailable('product');
@@ -70,50 +80,25 @@ describe('PrismaProductRepository', () => {
     });
 
     it('should return the max suffix found', async () => {
-      const category = await prisma.category.create({
-        data: { name: 'Cat', slug: 'cat' },
-      });
+      const category = await createCategory();
 
-      await prisma.product.createMany({
-        data: [
-          {
-            name: 'P1',
-            slug: 'mesa',
-            description: 'D',
-            price: 100,
-            listPrice: 100,
-            cashDiscountPrice: 100,
-            categoryId: category.id,
-          },
-          {
-            name: 'P2',
-            slug: 'mesa-1',
-            description: 'D',
-            price: 100,
-            listPrice: 100,
-            cashDiscountPrice: 100,
-            categoryId: category.id,
-          },
-          {
-            name: 'P3',
-            slug: 'mesa-5',
-            description: 'D',
-            price: 100,
-            listPrice: 100,
-            cashDiscountPrice: 100,
-            categoryId: category.id,
-          },
-          {
-            name: 'P4',
-            slug: 'mesa-other',
-            description: 'D',
-            price: 100,
-            listPrice: 100,
-            cashDiscountPrice: 100,
-            categoryId: category.id,
-          },
-        ],
-      });
+      const productsData = [
+        { name: 'P1', slug: 'mesa' },
+        { name: 'P2', slug: 'mesa-1' },
+        { name: 'P3', slug: 'mesa-5' },
+        { name: 'P4', slug: 'mesa-other' },
+      ];
+
+      for (const p of productsData) {
+        await createProductWithImage({
+          ...p,
+          description: 'D',
+          price: 100,
+          listPrice: 100,
+          cashDiscountPrice: 100,
+          categoryId: category.id,
+        });
+      }
 
       const result = await repository.findMaxSlugSuffix('mesa');
       expect(result).toBe(5);
@@ -122,32 +107,26 @@ describe('PrismaProductRepository', () => {
 
   describe('findProducts', () => {
     it('should return all products when no filter is provided', async () => {
-      const category = await prisma.category.create({
-        data: { name: 'Cat', slug: 'cat' },
+      const category = await createCategory();
+      await createProductWithImage({
+        name: 'P1',
+        slug: 'p1',
+        description: 'D',
+        price: 100,
+        listPrice: 100,
+        cashDiscountPrice: 100,
+        categoryId: category.id,
+        isFeatured: false,
       });
-      await prisma.product.createMany({
-        data: [
-          {
-            name: 'P1',
-            slug: 'p1',
-            description: 'D',
-            price: 100,
-            listPrice: 100,
-            cashDiscountPrice: 100,
-            categoryId: category.id,
-            isFeatured: false,
-          },
-          {
-            name: 'P2',
-            slug: 'p2',
-            description: 'D',
-            price: 200,
-            listPrice: 200,
-            cashDiscountPrice: 200,
-            categoryId: category.id,
-            isFeatured: true,
-          },
-        ],
+      await createProductWithImage({
+        name: 'P2',
+        slug: 'p2',
+        description: 'D',
+        price: 200,
+        listPrice: 200,
+        cashDiscountPrice: 200,
+        categoryId: category.id,
+        isFeatured: true,
       });
 
       const result = await repository.findProducts();
@@ -155,20 +134,16 @@ describe('PrismaProductRepository', () => {
     });
 
     it('should return empty array when featured=true but no featured products exist', async () => {
-      const category = await prisma.category.create({
-        data: { name: 'Cat3', slug: 'cat3' },
-      });
-      await prisma.product.create({
-        data: {
-          name: 'Normal',
-          slug: 'normal-only',
-          description: 'D',
-          price: 100,
-          listPrice: 100,
-          cashDiscountPrice: 100,
-          categoryId: category.id,
-          isFeatured: false,
-        },
+      const category = await createCategory();
+      await createProductWithImage({
+        name: 'Normal',
+        slug: 'normal-only',
+        description: 'D',
+        price: 100,
+        listPrice: 100,
+        cashDiscountPrice: 100,
+        categoryId: category.id,
+        isFeatured: false,
       });
 
       const result = await repository.findProducts({ featured: true });
@@ -176,32 +151,26 @@ describe('PrismaProductRepository', () => {
     });
 
     it('should return only featured products when filter featured=true', async () => {
-      const category = await prisma.category.create({
-        data: { name: 'Cat2', slug: 'cat2' },
+      const category = await createCategory();
+      await createProductWithImage({
+        name: 'Normal',
+        slug: 'normal',
+        description: 'D',
+        price: 100,
+        listPrice: 100,
+        cashDiscountPrice: 100,
+        categoryId: category.id,
+        isFeatured: false,
       });
-      await prisma.product.createMany({
-        data: [
-          {
-            name: 'Normal',
-            slug: 'normal',
-            description: 'D',
-            price: 100,
-            listPrice: 100,
-            cashDiscountPrice: 100,
-            categoryId: category.id,
-            isFeatured: false,
-          },
-          {
-            name: 'Featured',
-            slug: 'featured',
-            description: 'D',
-            price: 200,
-            listPrice: 200,
-            cashDiscountPrice: 200,
-            categoryId: category.id,
-            isFeatured: true,
-          },
-        ],
+      await createProductWithImage({
+        name: 'Featured',
+        slug: 'featured',
+        description: 'D',
+        price: 200,
+        listPrice: 200,
+        cashDiscountPrice: 200,
+        categoryId: category.id,
+        isFeatured: true,
       });
 
       const result = await repository.findProducts({ featured: true });
@@ -212,7 +181,7 @@ describe('PrismaProductRepository', () => {
   });
 
   describe('create', () => {
-    it('should create a new product', async () => {
+    it('should create a new product with images', async () => {
       const category = await prisma.category.create({
         data: { name: 'Comedores', slug: 'comedores' },
       });
@@ -235,7 +204,7 @@ describe('PrismaProductRepository', () => {
         finish: 'Barniz natural',
         fabric: '',
         shippingWeight: 50,
-        images: [],
+        images: ['image1.jpg'],
       };
 
       const product = await repository.create(productData);
@@ -244,12 +213,16 @@ describe('PrismaProductRepository', () => {
       expect(product.id).toBeDefined();
       expect(product.name).toBe(productData.name);
       expect(product.slug).toBe(productData.slug);
+      expect(product.images).toContain('image1.jpg');
 
       const dbProduct = await prisma.product.findUnique({
         where: { id: product.id },
+        include: { images: true },
       });
       expect(dbProduct).toBeDefined();
       expect(dbProduct?.name).toBe(productData.name);
+      expect(dbProduct?.images).toHaveLength(1);
+      expect(dbProduct?.images[0].url).toBe('image1.jpg');
     });
   });
 });

@@ -29,13 +29,13 @@ export async function fetchCategories<T = unknown>(): Promise<T> {
 }
 
 export async function createProduct<T>(data: any): Promise<T> {
+  const isFormData = data instanceof FormData;
+  
   const response = await fetch(`${API_BASE_URL}/products`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: isFormData ? {} : { 'Content-Type': 'application/json' },
     credentials: 'include',
-    body: JSON.stringify(data),
+    body: isFormData ? data : JSON.stringify(data),
   });
   if (!response.ok) {
     const error = await response.json().catch(() => ({ message: response.statusText }));
@@ -45,13 +45,13 @@ export async function createProduct<T>(data: any): Promise<T> {
 }
 
 export async function updateProduct<T>(id: string, data: any): Promise<T> {
+  const isFormData = data instanceof FormData;
+
   const response = await fetch(`${API_BASE_URL}/products/${id}`, {
     method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: isFormData ? {} : { 'Content-Type': 'application/json' },
     credentials: 'include',
-    body: JSON.stringify(data),
+    body: isFormData ? data : JSON.stringify(data),
   });
   if (!response.ok) {
     const error = await response.json().catch(() => ({ message: response.statusText }));

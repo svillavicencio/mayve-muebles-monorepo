@@ -21,7 +21,11 @@ export class Product {
     public readonly images: string[] = [],
     public readonly isFeatured: boolean = false,
     public readonly category?: Category,
-  ) {}
+  ) {
+    if (!images || images.length === 0) {
+      throw new Error('El producto debe tener al menos una imagen');
+    }
+  }
 }
 
 export class Category {

@@ -12,8 +12,10 @@ import { PRODUCT_REPOSITORY } from './domain/repositories/product.repository';
 import { PrismaProductRepository } from './infrastructure/repositories/prisma-product.repository';
 import { SlugGenerator } from './domain/services/slug-generator';
 import { ProductSlugService } from './domain/services/product-slug.service';
+import { StorageModule } from '../common/storage/storage.module';
 
 @Module({
+  imports: [StorageModule],
   controllers: [ProductsController, CategoriesController],
   providers: [
     GetProductsUseCase,

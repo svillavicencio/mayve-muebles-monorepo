@@ -53,7 +53,7 @@ const baseProductRow = {
   finish: null,
   fabric: null,
   shippingWeight: null,
-  images: [],
+  images: [{ url: 'img1.jpg' }],
   isFeatured: false,
 };
 

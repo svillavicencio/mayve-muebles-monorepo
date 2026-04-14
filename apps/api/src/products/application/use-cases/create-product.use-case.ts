@@ -12,14 +12,11 @@ export class CreateProductUseCase {
     private readonly slugService: ProductSlugService,
   ) {}
 
-  async execute(
-    data: Omit<Product, 'id' | 'slug' | 'images'>,
-  ): Promise<Product> {
+  async execute(data: Omit<Product, 'id' | 'slug'>): Promise<Product> {
     const slug = await this.slugService.generateUniqueSlug(data.name);
     return this.productRepository.create({
       ...data,
       slug,
-      images: [],
     });
   }
 }
