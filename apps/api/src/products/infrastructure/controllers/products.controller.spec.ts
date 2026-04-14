@@ -170,7 +170,10 @@ describe('ProductsController', () => {
       const result = await controller.createProduct(dto);
 
       expect(result).toEqual(mockProduct);
-      expect(createUseCase.execute).toHaveBeenCalledWith({ ...dto, isFeatured: false });
+      expect(createUseCase.execute).toHaveBeenCalledWith({
+        ...dto,
+        isFeatured: false,
+      });
     });
   });
 });

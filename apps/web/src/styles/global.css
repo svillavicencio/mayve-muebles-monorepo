@@ -39,6 +39,18 @@
   --max-width-content-narrow: 600px;
   --max-width-content-medium: 800px;
   --max-width-content-wide: 900px;
+
+  /* Admin Layout Spacing */
+  --admin-main-padding: 1rem;
+  --admin-card-padding: 1rem;
+}
+
+@utility admin-main-p {
+  padding: var(--admin-main-padding);
+}
+
+@utility admin-card-p {
+  padding: var(--admin-card-padding);
 }
 
 @utility glass-panel {
@@ -77,6 +89,32 @@
 }
 
 @layer base {
+  :root {
+    /* Mobile Extra Small */
+    @media (width < 375px) {
+      --admin-main-padding: 0.5rem;
+      --admin-card-padding: 0.5rem;
+    }
+
+    /* Mobile Standard */
+    @media (375px <= width < 640px) {
+      --admin-main-padding: 1rem;
+      --admin-card-padding: 1rem;
+    }
+
+    /* Tablet */
+    @media (640px <= width < 1024px) {
+      --admin-main-padding: 1.5rem;
+      --admin-card-padding: 1.5rem;
+    }
+
+    /* Desktop */
+    @media (width >= 1024px) {
+      --admin-main-padding: 2.5rem;
+      --admin-card-padding: 2.5rem;
+    }
+  }
+
   * {
     box-sizing: border-box;
     margin: 0;

@@ -167,8 +167,11 @@ export class PrismaProductRepository implements ProductRepository {
   }
 
   private mapToDomain(p: any): Product {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
-    const rawCat = p.category as { id: string; name: string; slug: string } | null | undefined;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    const rawCat = p.category as
+      | { id: string; name: string; slug: string }
+      | null
+      | undefined;
     return new Product(
       p.id,
       p.name,

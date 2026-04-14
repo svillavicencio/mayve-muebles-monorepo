@@ -53,13 +53,13 @@ test.describe('CFX-02: ConfigForm — Tailwind-only, no BEM styles', () => {
   });
 });
 
-test.describe('CFX-03: AdminLayout — mobile header h2 truncates', () => {
-  test('admin header h2 has min-w-0 and truncate', async ({ page }) => {
+test.describe('CFX-03: AdminLayout — mobile header h2 wraps', () => {
+  test('admin header h2 has min-w-0 and break-words', async ({ page }) => {
     await page.goto('/admin');
     await page.waitForLoadState('networkidle');
     const h2 = page.locator('header h2').first();
     const classAttr = await h2.getAttribute('class');
-    expect(classAttr).toContain('truncate');
+    expect(classAttr).toContain('break-words');
     expect(classAttr).toContain('min-w-0');
   });
 });
@@ -135,7 +135,7 @@ test.describe('CFX-09: ProductForm — checkboxes have accent-secondary', () => 
   });
 });
 
-test.describe('CFX-10: ProductTable — Sin imagen fallback has text-[10px]', () => {
+test.describe('CFX-10: ProductTable — Sin imagen fallback has text-xs', () => {
   test('Sin imagen fallback div class is updated', async ({ page }) => {
     await page.goto('/admin/products');
     await page.waitForLoadState('networkidle');
@@ -143,7 +143,8 @@ test.describe('CFX-10: ProductTable — Sin imagen fallback has text-[10px]', ()
     const count = await fallbacks.count();
     if (count > 0) {
       const classAttr = await fallbacks.first().getAttribute('class');
-      expect(classAttr).toContain('text-[10px]');
+      expect(classAttr).toContain('text-xs');
+      expect(classAttr).not.toContain('text-[10px]');
     } else {
       test.info().annotations.push({ type: 'note', description: 'No products without images found — class assertion skipped' });
     }
@@ -285,5 +286,117 @@ test.describe('CFX-21: Footer — uses lg:mt-16 not lg:mt-32', () => {
     const classAttr = await footer.getAttribute('class');
     expect(classAttr).toContain('lg:mt-16');
     expect(classAttr).not.toContain('lg:mt-32');
+  });
+});
+
+// admin-mobile-ui-overflow fix verification
+// Auth helper: set access_token cookie to bypass middleware (middleware checks presence only, not validity)
+async function setAdminAuth(page: import('@playwright/test').Page) {
+  await page.context().addCookies([{ name: 'access_token', value: 'test-token', domain: 'localhost', path: '/' }]);
+}
+
+test.describe('CFX-22: AdminLayout — header has flex-wrap and gap-y-2', () => {
+  test('admin header element has flex-wrap and gap-y-2', async ({ page }) => {
+    await setAdminAuth(page);
+    await page.goto('/admin');
+    await page.waitForLoadState('networkidle');
+    const header = page.locator('main header').first();
+    const classAttr = await header.getAttribute('class');
+    expect(classAttr).toContain('flex-wrap');
+    expect(classAttr).toContain('gap-y-2');
+  });
+});
+
+test.describe('CFX-23: AdminLayout — header left div has min-w-0 and flex-1', () => {
+  test('left side div of header has min-w-0 and flex-1', async ({ page }) => {
+    await setAdminAuth(page);
+    await page.goto('/admin');
+    await page.waitForLoadState('networkidle');
+    const leftDiv = page.locator('main header > div').first();
+    const classAttr = await leftDiv.getAttribute('class');
+    expect(classAttr).toContain('min-w-0');
+    expect(classAttr).toContain('flex-1');
+  });
+});
+
+test.describe('CFX-24: AdminLayout — subtitle span has truncate', () => {
+  test('label-caps subtitle span has truncate class', async ({ page }) => {
+    await setAdminAuth(page);
+    await page.goto('/admin');
+    await page.waitForLoadState('networkidle');
+    const span = page.locator('main header .label-caps').first();
+    const classAttr = await span.getAttribute('class');
+    expect(classAttr).toContain('truncate');
+  });
+});
+
+test.describe('CFX-25: AdminLayout — header h2 has text-xl and sm:text-3xl', () => {
+  test('admin header h2 has responsive font size classes', async ({ page }) => {
+    await setAdminAuth(page);
+    await page.goto('/admin');
+    await page.waitForLoadState('networkidle');
+    const h2 = page.locator('main header h2').first();
+    const classAttr = await h2.getAttribute('class');
+    expect(classAttr).toContain('text-xl');
+    expect(classAttr).toContain('sm:text-3xl');
+    expect(classAttr).not.toMatch(/(?<!\bsm:)text-3xl(?!\w)/);
+  });
+});
+
+test.describe('CFX-26: AdminLayout — right-side link div has shrink-0', () => {
+  test('right-side header div with Ver sitio link has shrink-0', async ({ page }) => {
+    await setAdminAuth(page);
+    await page.goto('/admin');
+    await page.waitForLoadState('networkidle');
+    const rightDiv = page.locator('main header > div').last();
+    const classAttr = await rightDiv.getAttribute('class');
+    expect(classAttr).toContain('shrink-0');
+  });
+});
+
+test.describe('CFX-27: AdminLayout — no horizontal overflow at 320px', () => {
+  test('admin page has no horizontal scrollbar at 320px viewport', async ({ page }) => {
+    await setAdminAuth(page);
+    await page.setViewportSize({ width: 320, height: 568 });
+    await page.goto('/admin');
+    await page.waitForLoadState('networkidle');
+    const hasOverflow = await page.evaluate(() =>
+      document.documentElement.scrollWidth > window.innerWidth
+    );
+    expect(hasOverflow).toBe(false);
+  });
+});
+
+test.describe('CFX-28: ProductTable — mobile card spacing', () => {
+  test('product name h3 has mb-2 not mb-1', async ({ page }) => {
+    await setAdminAuth(page);
+    await page.goto('/admin/products');
+    await page.waitForLoadState('networkidle');
+    const h3 = page.locator('.lg\\:hidden h3').first();
+    const count = await h3.count();
+    if (count > 0) {
+      const classAttr = await h3.getAttribute('class');
+      expect(classAttr).toContain('mb-2');
+      expect(classAttr).not.toContain('mb-1');
+    } else {
+      test.info().annotations.push({ type: 'note', description: 'No products found — skipping mb-2 check' });
+    }
+  });
+
+  test('card container uses gap-4 and min-[340px]:gap-6 instead of space-x/space-y', async ({ page }) => {
+    await setAdminAuth(page);
+    await page.goto('/admin/products');
+    await page.waitForLoadState('networkidle');
+    const card = page.locator('.lg\\:hidden > div').first();
+    const count = await card.count();
+    if (count > 0) {
+      const classAttr = await card.getAttribute('class');
+      expect(classAttr).toContain('gap-4');
+      expect(classAttr).toContain('min-[340px]:gap-6');
+      expect(classAttr).not.toContain('space-x-4');
+      expect(classAttr).not.toContain('space-y-4');
+    } else {
+      test.info().annotations.push({ type: 'note', description: 'No products found — skipping gap check' });
+    }
   });
 });

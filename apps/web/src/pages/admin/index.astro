@@ -35,29 +35,29 @@ const stats = [
 ];
 ---
 
-<AdminLayout title="Panel de Administración">
+<AdminLayout title="Panel de Administración" isFluid={true}>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
     {stats.map(stat => (
-      <div class="bg-white p-8 rounded-xl shadow-ambient flex items-center gap-6 hover:-translate-y-1 transition-transform">
-        <span class="text-secondary">
+      <div class="bg-white admin-card-p rounded-xl shadow-ambient flex items-center gap-6 hover:-translate-y-1 transition-transform">
+        <span class="text-secondary shrink-0">
           <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={stat.icon}></path>
           </svg>
         </span>
         <div>
           <h3 class="text-xs uppercase tracking-widest text-on-surface/60 mb-1">{stat.label}</h3>
-          <p class="text-4xl font-bold text-primary font-sans">{stat.value}</p>
+          <p class="text-4xl font-bold text-primary font-sans leading-none">{stat.value}</p>
         </div>
       </div>
     ))}
   </div>
 
-  <div>
-    <h2 class="text-2xl font-display mb-6">Acciones Rápidas</h2>
-    <div class="flex gap-4 flex-wrap">
-      <a href="/admin/products/new" class="btn-primary px-8 py-4 font-semibold">Nuevo Producto</a>
-      <a href="/admin/categories" class="btn-primary px-8 py-4 font-semibold">Gestionar Categorías</a>
-      <a href="/admin/config" class="btn-primary px-8 py-4 font-semibold">Ajustes Globales</a>
+  <div class="bg-white admin-card-p rounded-xl border border-surface-variant/30 shadow-ambient">
+    <h2 class="text-2xl font-display mb-8">Acciones Rápidas</h2>
+    <div class="flex flex-col sm:flex-row gap-4">
+      <a href="/admin/products/new" class="btn-primary px-8 py-4 font-semibold w-full sm:w-auto">Nuevo Producto</a>
+      <a href="/admin/categories" class="btn-primary px-8 py-4 font-semibold w-full sm:w-auto">Gestionar Categorías</a>
+      <a href="/admin/config" class="btn-primary px-8 py-4 font-semibold w-full sm:w-auto">Ajustes Globales</a>
     </div>
   </div>
 </AdminLayout>

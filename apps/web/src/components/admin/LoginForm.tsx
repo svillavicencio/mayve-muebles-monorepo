@@ -25,7 +25,7 @@ export const LoginForm: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-md p-8 bg-white shadow-ambient border border-surface-variant/50 rounded-lg">
+    <div className="w-full max-w-md p-6 sm:p-8 bg-white shadow-ambient border border-surface-variant/50 rounded-lg">
       <h1 className="mb-8 text-2xl font-display text-primary uppercase tracking-label text-center">
         Panel Admin
       </h1>
@@ -74,7 +74,7 @@ export const LoginForm: React.FC = () => {
           </button>
         </form>
 
-        <p className="mt-8 text-[10px] text-center uppercase tracking-label-wide text-secondary/70">
+        <p className="mt-8 text-xs text-center uppercase tracking-label-wide text-secondary/70">
           Mayve Muebles &copy; {new Date().getFullYear()}
         </p>
       </div>

@@ -49,10 +49,10 @@ export const ConfigForm: React.FC = () => {
       {success && <div className="text-green-600 text-sm">{success}</div>}
 
       <div>
-        <h3 className="text-[10px] uppercase tracking-widest text-secondary border-b border-surface-variant/30 pb-2 mb-6">Contacto</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+        <h3 className="text-xs uppercase tracking-widest text-secondary border-b border-surface-variant/30 pb-2 mb-6">Contacto</h3>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-8">
           <div className="space-y-1">
-            <label htmlFor="whatsapp" className="text-[10px] uppercase tracking-widest text-secondary/70">WhatsApp de Contacto</label>
+            <label htmlFor="whatsapp" className="text-xs uppercase tracking-widest text-secondary/70">WhatsApp de Contacto</label>
             <input
               id="whatsapp"
               type="text"
@@ -60,12 +60,12 @@ export const ConfigForm: React.FC = () => {
               onChange={(e) => setConfig({ ...config, whatsapp: e.target.value })}
               placeholder="Ej: +5491112345678"
               required
-              className="w-full border-b border-surface-variant focus:border-primary outline-none py-2 text-sm transition-colors bg-transparent"
+              className="w-full border-b border-surface-variant focus:border-primary outline-none py-3 text-sm transition-colors bg-transparent"
             />
           </div>
 
           <div className="space-y-1">
-            <label htmlFor="email" className="text-[10px] uppercase tracking-widest text-secondary/70">Email de Contacto</label>
+            <label htmlFor="email" className="text-xs uppercase tracking-widest text-secondary/70">Email de Contacto</label>
             <input
               id="email"
               type="email"
@@ -73,12 +73,12 @@ export const ConfigForm: React.FC = () => {
               onChange={(e) => setConfig({ ...config, email: e.target.value })}
               placeholder="Ej: contacto@mayve.com"
               required
-              className="w-full border-b border-surface-variant focus:border-primary outline-none py-2 text-sm transition-colors bg-transparent"
+              className="w-full border-b border-surface-variant focus:border-primary outline-none py-3 text-sm transition-colors bg-transparent"
             />
           </div>
 
           <div className="space-y-1">
-            <label htmlFor="cashDiscount" className="text-[10px] uppercase tracking-widest text-secondary/70">Descuento por Efectivo (%)</label>
+            <label htmlFor="cashDiscount" className="text-xs uppercase tracking-widest text-secondary/70">Descuento por Efectivo (%)</label>
             <input
               id="cashDiscount"
               type="number"
@@ -87,27 +87,27 @@ export const ConfigForm: React.FC = () => {
               value={config.cashDiscount}
               onChange={(e) => setConfig({ ...config, cashDiscount: parseInt(e.target.value) || 0 })}
               required
-              className="w-full border-b border-surface-variant focus:border-primary outline-none py-2 text-sm transition-colors bg-transparent"
+              className="w-full border-b border-surface-variant focus:border-primary outline-none py-3 text-sm transition-colors bg-transparent"
             />
           </div>
 
-          <div className="space-y-1 md:col-span-2">
-            <label htmlFor="announcementBanner" className="text-[10px] uppercase tracking-widest text-secondary/70">Banner de Anuncios (Opcional)</label>
+          <div className="space-y-1 lg:col-span-2">
+            <label htmlFor="announcementBanner" className="text-xs uppercase tracking-widest text-secondary/70">Banner de Anuncios (Opcional)</label>
             <textarea
               id="announcementBanner"
               value={config.announcementBanner || ''}
               onChange={(e) => setConfig({ ...config, announcementBanner: e.target.value })}
               placeholder="Ej: ¡10% de descuento en toda la web este fin de semana!"
               rows={3}
-              className="w-full border-b border-surface-variant focus:border-primary outline-none py-2 text-sm transition-colors bg-transparent"
+              className="w-full border-b border-surface-variant focus:border-primary outline-none py-3 text-sm transition-colors bg-transparent"
             />
-            <p className="text-[10px] uppercase tracking-widest text-secondary/70 mt-1">Dejá vacío para ocultar el banner.</p>
+            <p className="text-xs uppercase tracking-widest text-secondary/70 mt-1">Dejá vacío para ocultar el banner.</p>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-end">
-        <button type="submit" className="btn-primary px-8 py-3" disabled={saving}>
+      <div className="flex justify-end pt-4">
+        <button type="submit" className="btn-primary px-8 py-4 md:py-3 w-full md:w-auto" disabled={saving}>
           {saving ? 'Guardando...' : 'Guardar Cambios'}
         </button>
       </div>

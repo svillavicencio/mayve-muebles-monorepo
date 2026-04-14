@@ -9,12 +9,19 @@ export interface ProductRepository {
   findProductBySlug(slug: string): Promise<Product | null>;
   findCategories(): Promise<Category[]>;
   createCategory(name: string, slug: string): Promise<Category>;
-  updateCategory(id: string, name: string, slug: string): Promise<Category | null>;
+  updateCategory(
+    id: string,
+    name: string,
+    slug: string,
+  ): Promise<Category | null>;
   deleteCategory(id: string): Promise<boolean>;
   isSlugAvailable(slug: string): Promise<boolean>;
   findMaxSlugSuffix(baseSlug: string): Promise<number>;
   create(data: Omit<Product, 'id'>): Promise<Product>;
-  update(id: string, data: Partial<Omit<Product, 'id'>>): Promise<Product | null>;
+  update(
+    id: string,
+    data: Partial<Omit<Product, 'id'>>,
+  ): Promise<Product | null>;
   delete(id: string): Promise<boolean>;
 }
 

@@ -65,9 +65,9 @@ const CategoryManager: React.FC = () => {
       {/* Create form */}
       <section className="space-y-6">
         <h3 className="label-caps text-secondary border-b border-surface-variant/30 pb-2">Nueva Categoría</h3>
-        <form onSubmit={handleSubmit} className="flex items-end space-x-4">
-          <div className="flex-1 space-y-1">
-            <label className="text-[10px] uppercase tracking-widest text-secondary/70">Nombre</label>
+        <form onSubmit={handleSubmit} className="flex flex-col lg:flex-row items-start lg:items-end space-y-4 lg:space-y-0 lg:space-x-4">
+          <div className="w-full lg:flex-1 space-y-1">
+            <label className="text-xs uppercase tracking-widest text-secondary/70">Nombre</label>
             <input 
               type="text" value={newName} onChange={(e) => setNewName(e.target.value)} required
               placeholder="Ej. Sofás"
@@ -76,27 +76,27 @@ const CategoryManager: React.FC = () => {
           </div>
           <button 
             type="submit" disabled={submitting}
-            className="px-6 py-2 bg-primary text-white text-[10px] uppercase tracking-widest hover:bg-secondary transition-all disabled:opacity-50"
+            className="w-full lg:w-auto px-6 py-4 lg:py-2 bg-primary text-white text-xs uppercase tracking-widest hover:bg-secondary transition-all disabled:opacity-50"
           >
             {submitting ? 'Creando...' : 'Añadir'}
           </button>
         </form>
-        {error && <p className="text-[10px] uppercase tracking-widest text-red-500">{error}</p>}
+        {error && <p className="text-xs uppercase tracking-widest text-red-500">{error}</p>}
       </section>
 
       {/* List */}
       <section className="space-y-6">
         <h3 className="label-caps text-secondary border-b border-surface-variant/30 pb-2">Categorías Existentes</h3>
-        <div className="border border-surface-variant/20">
+        <div className="border border-surface-variant/20 rounded-lg overflow-hidden">
           {categories.map((cat) => (
             <div key={cat.id} className="flex justify-between items-center p-4 border-b border-surface-variant/10 hover:bg-surface/50 transition-colors last:border-0">
-              <div>
+              <div className="flex flex-col lg:flex-row lg:items-center min-w-0">
                 <span className="text-sm font-medium text-primary">{cat.name}</span>
-                <span className="text-[10px] text-secondary/50 font-mono ml-3 min-w-0 truncate">{cat.slug}</span>
+                <span className="text-xs text-secondary/50 font-mono lg:ml-3 min-w-0 truncate">{cat.slug}</span>
               </div>
               <button 
                 onClick={() => handleDelete(cat.id, cat.name)}
-                className="text-[10px] uppercase tracking-widest text-red-600 hover:text-red-800 transition-colors"
+                className="text-xs uppercase tracking-widest text-red-600 hover:text-red-800 transition-colors h-[44px] px-2 flex items-center justify-center shrink-0 ml-4"
               >
                 Eliminar
               </button>

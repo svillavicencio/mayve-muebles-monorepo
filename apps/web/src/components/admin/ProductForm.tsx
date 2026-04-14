@@ -120,32 +120,32 @@ const ProductForm: React.FC<ProductFormProps> = ({ id }) => {
     <form onSubmit={handleSubmit} className="space-y-8 max-w-4xl">
       {error && <div className="p-4 bg-red-50 text-red-500 text-xs uppercase tracking-widest border border-red-100">{error}</div>}
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Basic Info */}
         <div className="space-y-6">
           <h3 className="label-caps text-secondary border-b border-surface-variant/30 pb-2">Información Básica</h3>
           
           <div className="space-y-1">
-            <label className="text-[10px] uppercase tracking-widest text-secondary/70">Nombre del Producto</label>
+            <label className="text-xs uppercase tracking-widest text-secondary/70">Nombre del Producto</label>
             <input 
               type="text" name="name" value={formData.name} onChange={handleChange} required
-              className="w-full border-b border-surface-variant focus:border-primary outline-none py-2 text-sm transition-colors"
+              className="w-full border-b border-surface-variant focus:border-primary outline-none py-3 text-sm transition-colors"
             />
           </div>
 
           <div className="space-y-1">
-            <label className="text-[10px] uppercase tracking-widest text-secondary/70">Slug (URL)</label>
+            <label className="text-xs uppercase tracking-widest text-secondary/70">Slug (URL)</label>
             <input 
               type="text" name="slug" value={formData.slug} onChange={handleChange} required
-              className="w-full border-b border-surface-variant focus:border-primary outline-none py-2 text-sm transition-colors bg-surface/30"
+              className="w-full border-b border-surface-variant focus:border-primary outline-none py-3 text-sm transition-colors bg-surface/30"
             />
           </div>
 
           <div className="space-y-1">
-            <label className="text-[10px] uppercase tracking-widest text-secondary/70">Categoría</label>
+            <label className="text-xs uppercase tracking-widest text-secondary/70">Categoría</label>
             <select 
               name="categoryId" value={formData.categoryId} onChange={handleChange} required
-              className="w-full border-b border-surface-variant focus:border-primary outline-none py-2 text-sm transition-colors bg-transparent"
+              className="w-full border-b border-surface-variant focus:border-primary outline-none py-3 text-sm transition-colors bg-transparent"
             >
               <option value="">Seleccionar categoría</option>
               {categories.map(cat => <option key={cat.id} value={cat.id}>{cat.name}</option>)}
@@ -153,26 +153,26 @@ const ProductForm: React.FC<ProductFormProps> = ({ id }) => {
           </div>
 
           <div className="space-y-1">
-            <label className="text-[10px] uppercase tracking-widest text-secondary/70">Descripción</label>
+            <label className="text-xs uppercase tracking-widest text-secondary/70">Descripción</label>
             <textarea 
               name="description" value={formData.description} onChange={handleChange} required rows={4}
-              className="w-full border-b border-surface-variant focus:border-primary outline-none py-2 text-sm transition-colors bg-transparent mt-2"
+              className="w-full border-b border-surface-variant focus:border-primary outline-none py-3 text-sm transition-colors bg-transparent mt-2"
             />
           </div>
 
           <div className="space-y-1">
-            <label htmlFor="materials" className="text-[10px] uppercase tracking-widest text-secondary/70">Materiales</label>
+            <label htmlFor="materials" className="text-xs uppercase tracking-widest text-secondary/70">Materiales</label>
             <textarea 
               id="materials" name="materials" value={formData.materials} onChange={handleChange} rows={3}
-              className="w-full border-b border-surface-variant focus:border-primary outline-none py-2 text-sm transition-colors bg-transparent mt-2"
+              className="w-full border-b border-surface-variant focus:border-primary outline-none py-3 text-sm transition-colors bg-transparent mt-2"
             />
           </div>
 
           <div className="space-y-1">
-            <label htmlFor="dimensions" className="text-[10px] uppercase tracking-widest text-secondary/70">Dimensiones</label>
+            <label htmlFor="dimensions" className="text-xs uppercase tracking-widest text-secondary/70">Dimensiones</label>
             <input 
               id="dimensions" type="text" name="dimensions" value={formData.dimensions} onChange={handleChange}
-              className="w-full border-b border-surface-variant focus:border-primary outline-none py-2 text-sm transition-colors"
+              className="w-full border-b border-surface-variant focus:border-primary outline-none py-3 text-sm transition-colors"
             />
           </div>
         </div>
@@ -181,28 +181,28 @@ const ProductForm: React.FC<ProductFormProps> = ({ id }) => {
         <div className="space-y-6">
           <h3 className="label-caps text-secondary border-b border-surface-variant/30 pb-2">Precios y Stock</h3>
           
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1">
-              <label className="text-[10px] uppercase tracking-widest text-secondary/70">Precio Base</label>
+              <label className="text-xs uppercase tracking-widest text-secondary/70">Precio Base</label>
               <input 
                 type="number" name="price" value={formData.price} onChange={handleChange} required
-                className="w-full border-b border-surface-variant focus:border-primary outline-none py-2 text-sm transition-colors"
+                className="w-full border-b border-surface-variant focus:border-primary outline-none py-3 text-sm transition-colors"
               />
             </div>
             <div className="space-y-1">
-              <label className="text-[10px] uppercase tracking-widest text-secondary/70">Precio de Lista</label>
+              <label className="text-xs uppercase tracking-widest text-secondary/70">Precio de Lista</label>
               <input 
                 type="number" name="listPrice" value={formData.listPrice} onChange={handleChange}
-                className="w-full border-b border-surface-variant focus:border-primary outline-none py-2 text-sm transition-colors"
+                className="w-full border-b border-surface-variant focus:border-primary outline-none py-3 text-sm transition-colors"
               />
             </div>
           </div>
 
           <div className="space-y-1">
-            <label className="text-[10px] uppercase tracking-widest text-secondary/70">Precio Ef/Transf</label>
+            <label className="text-xs uppercase tracking-widest text-secondary/70">Precio Ef/Transf</label>
             <input 
               type="number" name="cashDiscountPrice" value={formData.cashDiscountPrice} onChange={handleChange}
-              className="w-full border-b border-surface-variant focus:border-primary outline-none py-2 text-sm transition-colors"
+              className="w-full border-b border-surface-variant focus:border-primary outline-none py-3 text-sm transition-colors"
             />
           </div>
 
@@ -212,7 +212,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ id }) => {
                 type="checkbox" name="inStock" checked={formData.inStock} onChange={handleChange}
                 className="w-4 h-4 border-surface-variant text-primary focus:ring-0 accent-secondary"
               />
-              <span className="text-[10px] uppercase tracking-widest text-secondary group-hover:text-primary transition-colors">En Stock</span>
+              <span className="text-xs uppercase tracking-widest text-secondary group-hover:text-primary transition-colors">En Stock</span>
             </label>
 
             <label className="flex items-center space-x-3 cursor-pointer group">
@@ -220,15 +220,15 @@ const ProductForm: React.FC<ProductFormProps> = ({ id }) => {
                 type="checkbox" name="isFeatured" checked={formData.isFeatured} onChange={handleChange}
                 className="w-4 h-4 border-surface-variant text-primary focus:ring-0 accent-secondary"
               />
-              <span className="text-[10px] uppercase tracking-widest text-secondary group-hover:text-primary transition-colors">Destacado</span>
+              <span className="text-xs uppercase tracking-widest text-secondary group-hover:text-primary transition-colors">Destacado</span>
             </label>
           </div>
 
           <div className="space-y-1">
-            <label className="text-[10px] uppercase tracking-widest text-secondary/70">Tiempo de entrega (días)</label>
+            <label className="text-xs uppercase tracking-widest text-secondary/70">Tiempo de entrega (días)</label>
             <input 
               type="number" name="leadTime" value={formData.leadTime} onChange={handleChange}
-              className="w-full border-b border-surface-variant focus:border-primary outline-none py-2 text-sm transition-colors"
+              className="w-full border-b border-surface-variant focus:border-primary outline-none py-3 text-sm transition-colors"
             />
           </div>
         </div>
@@ -240,24 +240,24 @@ const ProductForm: React.FC<ProductFormProps> = ({ id }) => {
           <h3 className="label-caps text-secondary">Imágenes (URLs)</h3>
           <button 
             type="button" onClick={addImageField}
-            className="text-[9px] uppercase tracking-widest text-secondary hover:text-primary transition-colors"
+            className="text-xs uppercase tracking-widest text-secondary hover:text-primary transition-colors py-2"
           >
             + Añadir URL
           </button>
         </div>
         
-        <div className="grid grid-cols-1 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {formData.images?.map((url, index) => (
             <div key={index} className="flex items-center space-x-2">
               <input 
                 type="text" value={url} onChange={(e) => handleImageChange(index, e.target.value)}
                 placeholder="https://ejemplo.com/imagen.jpg"
-                className="flex-1 border-b border-surface-variant focus:border-primary outline-none py-2 text-[11px] transition-colors"
+                className="flex-1 border-b border-surface-variant focus:border-primary outline-none py-3 text-xs transition-colors"
               />
               {formData.images!.length > 1 && (
                 <button 
                   type="button" onClick={() => removeImageField(index)}
-                  className="text-red-400 hover:text-red-600 p-1"
+                  className="text-red-400 hover:text-red-600 p-2"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
@@ -267,16 +267,16 @@ const ProductForm: React.FC<ProductFormProps> = ({ id }) => {
         </div>
       </div>
 
-      <div className="pt-10 flex justify-end space-x-4">
+      <div className="pt-10 flex flex-col md:flex-row md:justify-end gap-4">
         <a 
           href="/admin/products" 
-          className="px-8 py-3 text-[10px] uppercase tracking-widest text-secondary hover:text-primary transition-colors border border-surface-variant"
+          className="w-full md:w-auto text-center px-8 py-3 text-xs uppercase tracking-widest text-secondary hover:text-primary transition-colors border border-surface-variant"
         >
           Cancelar
         </a>
         <button 
           type="submit" disabled={submitting}
-          className="px-10 py-3 bg-primary text-white text-[10px] uppercase tracking-widest hover:bg-secondary transition-all disabled:opacity-50"
+          className="w-full md:w-auto px-10 py-3 bg-primary text-white text-xs uppercase tracking-widest hover:bg-secondary transition-all disabled:opacity-50"
         >
           {submitting ? 'Guardando...' : id ? 'Actualizar Producto' : 'Crear Producto'}
         </button>

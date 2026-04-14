@@ -29,10 +29,7 @@ export class CategoriesController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  async updateCategory(
-    @Param('id') id: string,
-    @Body('name') name: string,
-  ) {
+  async updateCategory(@Param('id') id: string, @Body('name') name: string) {
     const category = await this.updateCategoryUseCase.execute(id, name);
     if (!category) throw new NotFoundException('Category not found');
     return category;
