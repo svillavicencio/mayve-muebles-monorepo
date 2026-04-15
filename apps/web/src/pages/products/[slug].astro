@@ -3,23 +3,22 @@ import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import { ProductGallery } from '../../components/ProductGallery';
-import { fetchProducts } from '../../lib/api-client';
+import { fetchProduct } from '../../lib/api-client';
 import type { Product } from '@mayve/shared';
 
-export async function getStaticPaths() {
-  try {
-    const products = await fetchProducts<Product[]>();
-    return products.map((product) => ({
-      params: { slug: product.slug },
-      props: { product },
-    }));
-  } catch (e) {
-    console.error("Error fetching paths for SSG:", e);
-    return [];
-  }
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect('/404');
 }
 
-const { product } = Astro.props as { product: Product };
+let product: Product;
+try {
+  product = await fetchProduct<Product>(slug);
+} catch (e) {
+  console.error(`Error fetching product with slug ${slug}:`, e);
+  return Astro.redirect('/404');
+}
 ---
 
 <Layout title={product.name} description={product.description}>
