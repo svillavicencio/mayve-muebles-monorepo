@@ -41,6 +41,7 @@ export class AuthController {
 
     return {
       message: 'Login successful',
+      access_token,
       user: {
         id: session.user.id,
         email: session.user.email,
