@@ -7,6 +7,7 @@ import { CreateProductUseCase } from '../../application/use-cases/create-product
 import { UpdateProductUseCase } from '../../application/use-cases/update-product.use-case';
 import { DeleteProductUseCase } from '../../application/use-cases/delete-product.use-case';
 import { STORAGE_SERVICE } from '../../../common/storage/storage.service';
+import { JwtAuthGuard } from '../../../auth/guards/jwt-auth.guard';
 
 describe('ProductsController', () => {
   let controller: ProductsController;
@@ -45,7 +46,10 @@ describe('ProductsController', () => {
         { provide: DeleteProductUseCase, useValue: deleteProductUseCase },
         { provide: STORAGE_SERVICE, useValue: storageService },
       ],
-    }).compile();
+    })
+      .overrideGuard(JwtAuthGuard)
+      .useValue({ canActivate: () => true })
+      .compile();
 
     controller = module.get<ProductsController>(ProductsController);
   });
@@ -111,7 +115,10 @@ describe('ProductsController', () => {
           { provide: DeleteProductUseCase, useValue: deleteProductUseCase },
           { provide: STORAGE_SERVICE, useValue: storageService },
         ],
-      }).compile();
+      })
+        .overrideGuard(JwtAuthGuard)
+        .useValue({ canActivate: () => true })
+        .compile();
 
       app = moduleFixture.createNestApplication();
       await app.init();

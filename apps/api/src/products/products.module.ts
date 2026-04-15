@@ -13,9 +13,12 @@ import { PrismaProductRepository } from './infrastructure/repositories/prisma-pr
 import { SlugGenerator } from './domain/services/slug-generator';
 import { ProductSlugService } from './domain/services/product-slug.service';
 import { StorageModule } from '../common/storage/storage.module';
+import { SupabaseModule } from '../common/supabase/supabase.module';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { SupabaseAuthGuard } from '../auth/guards/supabase-auth.guard';
 
 @Module({
-  imports: [StorageModule],
+  imports: [StorageModule, SupabaseModule],
   controllers: [ProductsController, CategoriesController],
   providers: [
     GetProductsUseCase,
@@ -31,6 +34,8 @@ import { StorageModule } from '../common/storage/storage.module';
       provide: PRODUCT_REPOSITORY,
       useClass: PrismaProductRepository,
     },
+    SupabaseAuthGuard,
+    JwtAuthGuard,
   ],
   exports: [
     GetProductsUseCase,

@@ -46,6 +46,7 @@ describe('CreateProductUseCase', () => {
       cashDiscountPrice: 140,
       inStock: true,
       requiresAssembly: false,
+      isFeatured: false,
       images: ['image1.jpg'],
     };
     const mockSlug = 'modern-chair';

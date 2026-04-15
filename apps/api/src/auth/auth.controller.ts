@@ -20,19 +20,16 @@ export class AuthController {
     @Body() loginDto: any,
     @Res({ passthrough: true }) response: Response,
   ) {
-    const user = await this.authService.validateUser(
+    const session = await this.authService.validateUser(
       loginDto.email,
       loginDto.password,
     );
-    if (!user) {
+
+    if (!session) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    if (user.role !== 'admin') {
-      throw new UnauthorizedException('Access denied');
-    }
-
-    const { access_token } = await this.authService.login(user);
+    const { access_token } = await this.authService.login(session);
 
     response.cookie('access_token', access_token, {
       httpOnly: true,
@@ -44,10 +41,8 @@ export class AuthController {
     return {
       message: 'Login successful',
       user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
+        id: session.user.id,
+        email: session.user.email,
       },
     };
   }

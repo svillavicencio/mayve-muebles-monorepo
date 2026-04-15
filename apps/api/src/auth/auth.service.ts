@@ -1,29 +1,30 @@
 import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { PrismaService } from '../common/prisma/prisma.service';
-import * as bcrypt from 'bcryptjs';
+import { SupabaseService } from '../common/supabase/supabase.service';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private readonly jwtService: JwtService,
-    private readonly prisma: PrismaService,
-  ) {}
+  constructor(private readonly supabase: SupabaseService) {}
 
-  async validateUser(email: string, pass: string): Promise<any> {
-    const user = await this.prisma.user.findUnique({ where: { email } });
-    if (user && (await bcrypt.compare(pass, user.password))) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, ...result } = user;
-      return result;
+  async validateUser(
+    email: string,
+    password: string,
+  ): Promise<{ user: any; access_token: string } | null> {
+    const { data, error } = await this.supabase.client.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error || !data.session) {
+      return null;
     }
-    return null;
+
+    return {
+      user: data.user,
+      access_token: data.session.access_token,
+    };
   }
 
-  async login(user: any) {
-    const payload = { email: user.email, sub: user.id, role: user.role };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+  async login(sessionData: { access_token: string }) {
+    return { access_token: sessionData.access_token };
   }
 }

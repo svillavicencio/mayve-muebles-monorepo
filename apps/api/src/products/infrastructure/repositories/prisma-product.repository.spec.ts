@@ -204,6 +204,7 @@ describe('PrismaProductRepository', () => {
         finish: 'Barniz natural',
         fabric: '',
         shippingWeight: 50,
+        isFeatured: false,
         images: ['image1.jpg'],
       };
 
