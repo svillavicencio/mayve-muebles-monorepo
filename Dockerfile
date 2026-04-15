@@ -74,5 +74,6 @@ EXPOSE 3000
 # Drop to the non-root `node` user pre-baked into node:alpine (UID 1000)
 USER node
 
-WORKDIR /app/apps/api
-CMD ["node", "dist/main"]
+# Volvemos a la raíz para evitar errores de rutas repetidas
+WORKDIR /app
+CMD ["node", "apps/api/dist/main"]
