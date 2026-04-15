@@ -15,19 +15,17 @@ RUN turbo prune --scope=api --docker
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Stage 2: installer
-# Installs dependencies with Bun against the pruned lockfile.
-# Copying manifests before source maximises layer cache reuse:
-# this layer only re-runs when a package.json or lockfile changes.
+# Installs dependencies against the pruned lockfile.
+# Copying manifests before source maximises layer cache reuse.
 # ─────────────────────────────────────────────────────────────────────────────
-FROM oven/bun:1-alpine AS installer
+FROM node:24-alpine AS installer
 WORKDIR /app
 COPY --from=pruner /app/out/json/ .
-RUN bun install
+RUN npm install
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Stage 3: builder
 # Generates the Prisma client (must run before nest build) and compiles the API.
-# Uses Node 24 to avoid Bun-specific edge cases with NestJS decorators and tsc.
 # ─────────────────────────────────────────────────────────────────────────────
 FROM node:24-alpine AS builder
 RUN apk add --no-cache openssl
@@ -35,7 +33,7 @@ WORKDIR /app
 COPY --from=installer /app/node_modules ./node_modules
 COPY --from=pruner /app/out/full/ .
 RUN npx prisma generate --schema=packages/database/prisma/schema.prisma
-RUN npm run build --workspace=api
+RUN cd apps/api && npm run build
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Stage 4: runner
