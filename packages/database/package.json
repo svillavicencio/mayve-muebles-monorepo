@@ -2,7 +2,7 @@
   "name": "@mayve/database",
   "version": "0.0.0",
   "private": true,
-  "main": "./index.ts",
+  "main": "./index.js",
   "types": "./index.ts",
   "scripts": {
     "seed": "tsx prisma/seed.ts"

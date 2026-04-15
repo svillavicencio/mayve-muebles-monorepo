@@ -1,0 +1,51 @@
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Node / package manager artifacts
+**/node_modules
+**/npm-debug.log
+**/yarn-error.log
+**/pnpm-debug.log
+
+# Build outputs
+**/dist
+**/build
+**/.next
+**/.astro
+**/.turbo
+**/coverage
+
+# Env and secrets
+.env
+.env.*
+**/.env
+**/.env.*
+
+# Editor / OS
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+*.swp
+
+# Tests and fixtures
+**/*.spec.ts
+**/*.test.ts
+**/__tests__
+**/test
+**/e2e
+
+# Docker itself
+Dockerfile
+.dockerignore
+docker-compose.yml
+docker-compose.*.yml
+
+# Supabase local data
+supabase/.branches
+supabase/.temp
+
+# Misc
+**/*.log
