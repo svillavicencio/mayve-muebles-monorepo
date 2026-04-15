@@ -13,9 +13,17 @@ export const LoginForm: React.FC = () => {
     setError(null);
 
     try {
-      await login(email, password);
+      const response = await login<any>(email, password);
+      const { access_token } = response;
+      
+      if (access_token) {
+        // Seteamos la cookie manualmente para el dominio de la web (Vercel)
+        // ya que la cookie de la API (Railway) no es accesible por el middleware de Astro
+        document.cookie = `access_token=${access_token}; path=/; max-age=3600; SameSite=Lax; Secure`;
+        console.log('Login exitoso, cookie establecida');
+      }
+      
       // Redirect to admin dashboard on success
-      // The HTTP-only cookie is managed by the browser
       window.location.href = '/admin';
     } catch (err: any) {
       setError(err.message || 'Error al iniciar sesión');
